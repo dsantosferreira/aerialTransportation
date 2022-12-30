@@ -6,3 +6,11 @@ Airline::Airline(string code, string name, string callSign, string country) {
     this->callSign = callSign;
     this->country = country;
 }
+
+string Airline::getCode() const {
+    return code;
+}
+
+string Airline::getName() const {
+    return name;
+}

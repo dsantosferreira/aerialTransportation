@@ -11,6 +11,8 @@ private:
 
 public:
     Airline(string code, string name, string callSign, string country);
+    string getCode() const;
+    string getName() const;
 };
 
 #endif

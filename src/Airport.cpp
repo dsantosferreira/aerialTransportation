@@ -8,3 +8,11 @@ Airport::Airport(string code, string name, string city, string country, float la
     this->latitude = latitude;
     this->longitude = longitude;
 }
+
+string Airport::getCode() const {
+    return code;
+}
+
+string Airport::getName() const {
+    return name;
+}
