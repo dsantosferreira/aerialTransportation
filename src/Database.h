@@ -45,13 +45,12 @@ class Database {
 private:
     airportHTable airports;
     airlineHTable airlines;
-    Graph flights;
+    //Graph flights;
 
 public:
     Database();
     airportHTable getAirports() const;
     airlineHTable getAirlines() const;
-
 };
 
 
