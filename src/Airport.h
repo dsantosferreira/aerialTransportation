@@ -16,5 +16,19 @@ public:
     string getName() const;
 };
 
+struct airportHash {
+    int operator() (const Airport& airport) const {
+        int hash = 0;
+        string airportCode = airport.getCode();
+        for (int i = 0; i < airportCode.size(); i++) {
+            hash += airportCode[i] * (i + 1);
+        }
+        return hash % 3023;
+    }
+
+    bool operator() (const Airport& airport1, const Airport& airport2) const {
+        return airport1.getCode() == airport2.getCode();
+    }
+};
 
 #endif

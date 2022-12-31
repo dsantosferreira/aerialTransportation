@@ -15,9 +15,11 @@ void Program::run() {
 
     while (currMenuPage != -1) {
         menus[currMenuPage].draw();
+
         cout << "Insert an option: " << endl;
         while ( getMenuOption(option, menus[currMenuPage].getButtons().size()) )
             cout << "Please insert a valid option: " << endl;
+
         menus[currMenuPage].doAction(option - 1);
     }
 
