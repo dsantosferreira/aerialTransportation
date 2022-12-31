@@ -2,6 +2,8 @@
 #define AERIALTRANSPORTATION_DATABASE_H
 
 #include <unordered_set>
+#include <fstream>
+#include <sstream>
 #include "Airport.h"
 #include "Airline.h"
 #include "Graph.h"
@@ -15,12 +17,15 @@ class Database {
 private:
     airportHTable airports;
     airlineHTable airlines;
-    //Graph flights;
+    Graph flights;
 
 public:
     Database();
     airportHTable getAirports() const;
     airlineHTable getAirlines() const;
+    void readAirports();
+    void readAirlines();
+    void createFlightsGraph();
 };
 
 

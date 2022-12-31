@@ -4,12 +4,17 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include "Airport.h"
 
 using namespace std;
 
+typedef unordered_set<Airport, airportHash, airportHash> airportHTable;
+
 class Graph {
     struct Edge {
-        int dest;
+        string destCode;
         int weight;
         string airlineCode;
     };
@@ -22,11 +27,13 @@ class Graph {
 
     int n;
     bool hasDir;
-    vector<Node> nodes;
+    unordered_map<string, Node> nodes;
 
 public:
-    Graph(int nodes, bool dir = false);
-    void addEdge(int src, int dest, int weight = 1);
+    Graph();
+    Graph(int num, bool dir = false);
+    Graph(int num, airportHTable airports, bool dir = false);
+    void addEdge(string src, string dest, string airline, int weight = 0);
 };
 
 #endif
