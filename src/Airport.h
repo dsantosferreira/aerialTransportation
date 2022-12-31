@@ -14,6 +14,11 @@ public:
     Airport(string code, string name, string city, string country, float latitude, float longitude);
     string getCode() const;
     string getName() const;
+    string getCity() const;
+    string getCountry() const;
+    float getLatitude() const;
+    float getLongitude() const;
+    float distance(Airport airport2) const;
 };
 
 struct airportHash {
