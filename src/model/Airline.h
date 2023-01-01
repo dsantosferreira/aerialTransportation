@@ -2,7 +2,7 @@
 #define AERIALTRANSPORTATION_AIRLINE_H
 
 #include <string>
-
+#include<iostream>
 using namespace std;
 
 class Airline {
@@ -13,6 +13,7 @@ public:
     Airline(string code, string name, string callSign, string country);
     string getCode() const;
     string getName() const;
+    void print()const;
 };
 
 struct airlineHash {

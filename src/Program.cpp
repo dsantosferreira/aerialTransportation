@@ -1,5 +1,7 @@
 #include <limits>
 #include "Program.h"
+#include "menu/show/ShowAirport.h"
+#include "menu/show/ShowAirline.h"
 
 Program::Program() {
     currMenuPage = 0;
@@ -50,14 +52,14 @@ void Program::createMainMenu() {
 
 void Program::createMenu1() {
     menus.push_back(Menu("../files/menu1"));
-    menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 2));
+    menus[menus.size() - 1].addMenuItem(new ShowAirline(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 0));
 
 }
 
 void Program::createMenu2() {
     menus.push_back(Menu("../files/menu2"));
-    menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 1));
+    menus[menus.size() - 1].addMenuItem(new ShowAirport(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 0));
 }
 

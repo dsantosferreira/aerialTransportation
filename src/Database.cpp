@@ -50,3 +50,9 @@ void Database::createFlightsGraph() {
         flights.addEdge(source, target, airline);
     }
 }
+airportHTable Database::getAirports() const {
+    return airports;
+}
+airlineHTable Database::getAirlines() const {
+    return airlines;
+}
