@@ -48,3 +48,34 @@ int Graph::minAirportFlightsBFS(string origin, string destination) {
 
     return -1;
 }
+
+int Graph::minCityFlightsBFS(string origin, string cityDest, airportHTable &airports) {
+    // Reset all nodes
+    for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
+        itr->second.visited = false;
+        itr->second.distance = 0;
+    }
+
+    queue<string> toVisit;
+    toVisit.push(origin);
+    nodes[origin].visited = true;
+
+    while (!toVisit.empty()) {
+        string currAirportCode = toVisit.front();
+        Node currNode = nodes[currAirportCode];
+
+        if (airports.find(Airport(currAirportCode, "", "", "", 0, 0))->getCity() == cityDest)
+            return currNode.distance;
+
+        for (Edge edge: currNode.adj) {
+            if (!nodes[edge.destCode].visited) {
+                toVisit.push(edge.destCode);
+                nodes[edge.destCode].visited = true;
+                nodes[edge.destCode].distance = nodes[currAirportCode].distance + 1;
+            }
+        }
+        toVisit.pop();
+    }
+
+    return -1;
+}

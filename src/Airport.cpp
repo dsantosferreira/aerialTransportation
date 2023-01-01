@@ -16,3 +16,7 @@ string Airport::getCode() const {
 string Airport::getName() const {
     return name;
 }
+
+string Airport::getCity() const {
+    return city;
+}
