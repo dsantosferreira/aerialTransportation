@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <queue>
 #include "Airport.h"
 
 using namespace std;
@@ -33,6 +34,7 @@ public:
     Graph();
     Graph(int num, bool dir = false);
     Graph(int num, airportHTable airports, bool dir = false);
+    int minAirportFlightsBFS(string airportCode1, string airportCode2);
     void addEdge(string src, string dest, string airline, int weight = 0);
 };
 

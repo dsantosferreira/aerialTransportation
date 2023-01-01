@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include <iostream>
 
 Graph::Graph() {}
 
@@ -15,4 +16,35 @@ Graph::Graph(int num, airportHTable airports, bool dir) : n(num), hasDir(dir) {
     for (Airport airport: airports) {
         nodes.insert({airport.getCode(), Node()});
     }
+}
+
+int Graph::minAirportFlightsBFS(string origin, string destination) {
+    // Reset all nodes
+    for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
+        itr->second.visited = false;
+        itr->second.distance = 0;
+    }
+
+    queue<string> toVisit;
+    toVisit.push(origin);
+    nodes[origin].visited = true;
+
+    while (!toVisit.empty()) {
+        string currAirportCode = toVisit.front();
+        Node currNode = nodes[currAirportCode];
+
+        if (currAirportCode == destination)
+            return currNode.distance;
+
+        for (Edge edge: currNode.adj) {
+            if (!nodes[edge.destCode].visited) {
+                toVisit.push(edge.destCode);
+                nodes[edge.destCode].visited = true;
+                nodes[edge.destCode].distance = nodes[currAirportCode].distance + 1;
+            }
+        }
+        toVisit.pop();
+    }
+
+    return -1;
 }
