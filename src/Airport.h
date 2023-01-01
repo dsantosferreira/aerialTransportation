@@ -2,13 +2,14 @@
 #define AERIALTRANSPORTATION_AIRPORT_H
 
 #include <string>
+#include "Coordinate.h"
 
 using namespace std;
 
 class Airport {
 private:
     string code, name, city, country;
-    float latitude, longitude;
+    Coordinate coordinate;
 
 public:
     Airport(string code, string name, string city, string country, float latitude, float longitude);
@@ -16,9 +17,7 @@ public:
     string getName() const;
     string getCity() const;
     string getCountry() const;
-    float getLatitude() const;
-    float getLongitude() const;
-    float distance(Airport airport2) const;
+    Coordinate getCoordinate() const;
 };
 
 struct airportHash {
