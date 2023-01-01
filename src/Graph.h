@@ -36,6 +36,7 @@ public:
     Graph(int num, airportHTable airports, bool dir = false);
     int minAirportFlightsBFS(string origin, string destination);
     int minCityFlightsBFS(string origin, string cityDest, airportHTable& airports);
+    int minDistanceFlightsBFS(string origin, Coordinate center, float radius, airportHTable &airports);
     void addEdge(string src, string dest, string airline, int weight = 0);
 };
 

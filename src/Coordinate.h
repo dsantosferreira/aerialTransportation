@@ -1,4 +1,5 @@
 #ifndef AERIALTRANSPORTATION_COORDINATE_H
+#define AERIALTRANSPORTATION_COORDINATE_H
 
 class Coordinate{
 private:
@@ -10,7 +11,5 @@ public:
     float getLongitude() const;
     float distance(Coordinate coordinate1) const;
 };
-
-#define AERIALTRANSPORTATION_COORDINATE_H
 
 #endif //AERIALTRANSPORTATION_COORDINATE_H
