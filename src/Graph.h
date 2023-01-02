@@ -24,6 +24,7 @@ class Graph {
         list<Edge> adj;
         bool visited;
         int distance;
+        list<pair<string, string>> parents; // First string is the airport; the second is the airline used
     };
 
     int n;
@@ -34,9 +35,10 @@ public:
     Graph();
     Graph(int num, bool dir = false);
     Graph(int num, airportHTable airports, bool dir = false);
-    int minAirportFlightsBFS(string origin, string destination);
+    vector<list<pair<string, string>>> minAirportFlightsBFS(string origin, string destination);
     int minCityFlightsBFS(string origin, string cityDest, airportHTable& airports);
     int minDistanceFlightsBFS(string origin, Coordinate center, float radius, airportHTable &airports);
+    void findPaths(vector<list<pair<string, string>>> &allPaths, string currAirportCode, list<pair<string, string>> aPath);
     void addEdge(string src, string dest, string airline, int weight = 0);
 };
 

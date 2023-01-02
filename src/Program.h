@@ -14,6 +14,7 @@ private:
     int currMenuPage;
     vector<Menu> menus;
     Database database;
+
     void createMainMenu();
     void createMenu1();
     void createMenu2();

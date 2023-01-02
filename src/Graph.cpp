@@ -18,35 +18,42 @@ Graph::Graph(int num, airportHTable airports, bool dir) : n(num), hasDir(dir) {
     }
 }
 
-int Graph::minAirportFlightsBFS(string origin, string destination) {
+vector<list<pair<string, string>>> Graph::minAirportFlightsBFS(string origin, string destination) {
     // Reset all nodes
     for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
-        itr->second.visited = false;
-        itr->second.distance = 0;
+        itr->second.distance = INT32_MAX;
+        itr->second.parents.clear();
     }
 
+    vector<list<pair<string, string>>> allPaths;
     queue<string> toVisit;
     toVisit.push(origin);
-    nodes[origin].visited = true;
+    nodes[origin].distance = 0;
 
     while (!toVisit.empty()) {
         string currAirportCode = toVisit.front();
         Node currNode = nodes[currAirportCode];
 
-        if (currAirportCode == destination)
-            return currNode.distance;
+        if (currAirportCode == destination) {
+            findPaths(allPaths, currAirportCode, list<pair<string, string>>());
+            break;
+        }
 
         for (Edge edge: currNode.adj) {
-            if (!nodes[edge.destCode].visited) {
-                toVisit.push(edge.destCode);
-                nodes[edge.destCode].visited = true;
-                nodes[edge.destCode].distance = nodes[currAirportCode].distance + 1;
+            string neighbour = edge.destCode;
+
+            if (nodes[neighbour].distance > currNode.distance + 1) {
+                nodes[neighbour].distance = currNode.distance + 1;
+                nodes[neighbour].parents.push_back({currAirportCode, edge.airlineCode});
+                toVisit.push(neighbour);
             }
+            else if (nodes[neighbour].distance == currNode.distance + 1)
+                nodes[neighbour].parents.push_back({currAirportCode, edge.airlineCode});
         }
         toVisit.pop();
     }
 
-    return -1;
+    return allPaths;
 }
 
 int Graph::minCityFlightsBFS(string origin, string cityDest, airportHTable &airports) {
@@ -110,4 +117,20 @@ int Graph::minDistanceFlightsBFS(string origin, Coordinate center, float radius,
     }
 
     return -1;
+}
+
+void Graph::findPaths(vector<list<pair<string, string>>> &allPaths, string currAirportCode, list<pair<string, string>> aPath) {
+    if (nodes[currAirportCode].parents.empty()) {
+        Node a = nodes[currAirportCode];
+        aPath.insert(aPath.begin(), {currAirportCode, ""});
+        allPaths.push_back(aPath);
+    }
+    else {
+        Node a = nodes[currAirportCode];
+        for (pair<string, string> parent: nodes[currAirportCode].parents) {
+            aPath.insert(aPath.begin(), {currAirportCode, parent.second});
+            findPaths(allPaths, parent.first, aPath);
+            aPath.erase(aPath.begin());
+        }
+    }
 }
