@@ -1,6 +1,11 @@
 #include <cmath>
 #include "Coordinate.h"
 
+Coordinate::Coordinate() {
+    this->latitude=0;
+    this->longitude=0;
+}
+
 Coordinate::Coordinate(float latitude, float longitude) {
     this->latitude = latitude;
     this->longitude = longitude;

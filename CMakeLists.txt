@@ -3,4 +3,6 @@ project(aerialTransportation)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(aerialTransportation src/main.cpp src/Graph.h src/Graph.cpp src/Airline.h src/Airline.cpp src/Program.h src/Program.cpp src/Database.h src/Database.cpp src/Airport.cpp src/Airport.h src/Menu.cpp src/MenuItem.cpp src/ChangeMenu.cpp src/Coordinate.h src/Coordinate.cpp)
+
+add_executable(aerialTransportation src/main.cpp src/model/Graph.h src/model/Graph.cpp src/model/Airline.h src/model/Airline.cpp src/Program.h src/Program.cpp src/Database.h src/Database.cpp src/model/Airport.cpp src/model/Airport.h src/menu/Menu.cpp src/menu/MenuItem.cpp src/menu/change/ChangeMenu.cpp src/menu/show/Show.h src/menu/show/Show.cpp src/menu/show/ShowAirport.h src/menu/show/ShowAirport.cpp src/menu/show/ShowAirline.h src/menu/show/ShowAirline.cpp src/model/Coordinate.cpp)
+
