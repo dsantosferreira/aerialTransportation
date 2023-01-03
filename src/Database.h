@@ -4,9 +4,9 @@
 #include <unordered_set>
 #include <fstream>
 #include <sstream>
-#include "Airport.h"
-#include "Airline.h"
-#include "Graph.h"
+#include "model/Airport.h"
+#include "model/Airline.h"
+#include "model/Graph.h"
 
 using namespace std;
 

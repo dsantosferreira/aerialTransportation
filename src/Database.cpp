@@ -54,3 +54,10 @@ void Database::createFlightsGraph() {
 Graph Database::getFlightsGraph() const {
     return flights;
 }
+
+airportHTable Database::getAirports() const {
+    return airports;
+}
+airlineHTable Database::getAirlines() const {
+    return airlines;
+}

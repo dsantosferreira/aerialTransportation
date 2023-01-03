@@ -1,8 +1,8 @@
 #ifndef AERIALTRANSPORTATION_PROGRAM_H
 #define AERIALTRANSPORTATION_PROGRAM_H
 
-#include "Menu.h"
-#include "ChangeMenu.h"
+#include "menu/Menu.h"
+#include "menu/change/ChangeMenu.h"
 #include <string>
 #include <vector>
 #include <iostream>
