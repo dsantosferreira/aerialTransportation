@@ -111,7 +111,6 @@ void Search::execute() {
     airlines = chooseAirlines();
     trips minimalFlights = getMinimalFlights(originAirports, destAirports, airlines);
     printMinimalFlights(minimalFlights);
-
 }
 
 vector<string> Search::readMenuButtons() {
@@ -192,10 +191,12 @@ unordered_set<string> Search::chooseAirlines() {
             }
             return chosenAirlines;
         }
+
         else if (airlines.find(Airline(input, "", "", "")) != airlines.end()) {
             cout << "Added " << input << " to chosen airlines" << endl;
             chosenAirlines.insert(input);
         }
+
         else
             cout << input << " isn't a valid airline. Please insert a valid airline: ";
     }
