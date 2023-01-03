@@ -3,12 +3,11 @@
 
 using namespace std;
 
-Airport::Airport(string code, string name, string city, string country, float latitude, float longitude) {
+Airport::Airport(string code, string name, string city, string country, float latitude, float longitude) : coordinate(Coordinate(latitude, longitude)) {
     this->code = code;
     this->name = name;
     this->city = city;
     this->country = country;
-    this->coordinate = Coordinate(latitude, longitude);
 }
 
 string Airport::getCode() const {

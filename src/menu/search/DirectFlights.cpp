@@ -22,9 +22,9 @@ void DirectFlights::execute() {
     int c=0;
     cout << "Introduce the airport code: ";
     cin >> airport_code;
-    if ((database.getGraph().getNodes().find(airport_code)) != database.getGraph().getNodes().end()) {
+    if ((database.getFlightsGraph().getNodes().find(airport_code)) != database.getFlightsGraph().getNodes().end()) {
         vector<Graph::Edge>edges;
-        Graph::Node airport = (database.getGraph().getNodes().find(airport_code))->second;
+        Graph::Node airport = (database.getFlightsGraph().getNodes().find(airport_code))->second;
         for(auto e:airport.adj){
             edges.push_back(e);
             string country=database.getAirports().find(Airport(e.destCode,"","","",0,0))->getCountry();

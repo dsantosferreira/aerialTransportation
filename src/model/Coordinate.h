@@ -13,6 +13,4 @@ public:
     float distance(Coordinate coordinate1) const;
 };
 
-
-
 #endif //AERIALTRANSPORTATION_COORDINATE_H

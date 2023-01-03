@@ -23,7 +23,7 @@ public:
     Database();
     airportHTable getAirports() const;
     airlineHTable getAirlines() const;
-    Graph getGraph()const;
+    Graph getFlightsGraph() const;
     void readAirports();
     void readAirlines();
     void createFlightsGraph();
