@@ -10,7 +10,8 @@
 
 using namespace std;
 
-class Program {
+class Program
+{
 private:
     int currMenuPage;
     vector<Menu> menus;
@@ -26,6 +27,5 @@ public:
     int getMenuOption(int &option, int nButtons);
     void cleanMenus();
 };
-
 
 #endif

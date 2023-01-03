@@ -1,20 +1,32 @@
 #include "Airline.h"
 
-Airline::Airline(string code, string name, string callSign, string country) {
+Airline::Airline(string code, string name, string callSign, string country)
+{
     this->code = code;
     this->name = name;
     this->callSign = callSign;
     this->country = country;
 }
+Airline::Airline(string code)
+{
+    this->code = code;
+    this->name = "";
+    this->callSign = "";
+    this->country = "";
+}
 
-string Airline::getCode() const {
+string Airline::getCode() const
+{
     return code;
 }
 
-string Airline::getName() const {
+string Airline::getName() const
+{
     return name;
 }
-void Airline:: print() const{
-        cout<<this->getCode()<<"       | "<<this->getName();
-        for(int i=0; i<66-this->getName().length();i++)cout<<" ";
+void Airline::print() const
+{
+    cout << this->getCode() << "       | " << this->getName();
+    for (int i = 0; i < 66 - this->getName().length(); i++)
+        cout << " ";
 }

@@ -111,6 +111,9 @@ void Search::execute() {
     airlines = chooseAirlines();
     trips minimalFlights = getMinimalFlights(originAirports, destAirports, airlines);
     printMinimalFlights(minimalFlights);
+    cout<<"Enter anything to go back: ";
+    string wait;
+    cin>>wait;
 }
 
 vector<string> Search::readMenuButtons() {
@@ -238,4 +241,5 @@ void Search::printMinimalFlights(trips minimalFlights) {
         }
         cout << endl;
     }
+
 }

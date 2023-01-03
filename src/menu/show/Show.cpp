@@ -4,6 +4,4 @@
 
 #include "Show.h"
 
-Show::Show(int &currMenuPage, Database &database): MenuItem(currMenuPage, database) {}
-
-
+Show::Show(int &currMenuPage, Database &database) : MenuItem(currMenuPage, database) {}

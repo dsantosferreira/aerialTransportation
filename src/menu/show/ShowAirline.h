@@ -5,16 +5,14 @@
 #ifndef AERIALTRANSPORTATION_SHOWAIRLINE_H
 #define AERIALTRANSPORTATION_SHOWAIRLINE_H
 
-
 #include "Show.h"
 
-class ShowAirline: public Show{
+class ShowAirline : public Show
+{
 
 public:
-    ShowAirline(int& currMenuPage, Database& database);
-    void execute()override;
-
+    ShowAirline(int &currMenuPage, Database &database);
+    void execute() override;
 };
 
-
-#endif //AERIALTRANSPORTATION_SHOWAIRLINE_H
+#endif // AERIALTRANSPORTATION_SHOWAIRLINE_H

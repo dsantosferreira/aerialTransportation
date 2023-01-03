@@ -13,7 +13,8 @@ using namespace std;
 typedef unordered_set<Airport, airportHash, airportHash> airportHTable;
 typedef unordered_set<Airline, airlineHash, airlineHash> airlineHTable;
 
-class Database {
+class Database
+{
 private:
     airportHTable airports;
     airlineHTable airlines;
@@ -22,12 +23,13 @@ private:
 public:
     Database();
     airportHTable getAirports() const;
+    Airport getAirport(string code) const;
+    Airline getAirline(string code) const;
     airlineHTable getAirlines() const;
     Graph getFlightsGraph() const;
     void readAirports();
     void readAirlines();
     void createFlightsGraph();
 };
-
 
 #endif
