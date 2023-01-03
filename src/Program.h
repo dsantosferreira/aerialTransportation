@@ -3,6 +3,7 @@
 
 #include "menu/Menu.h"
 #include "menu/change/ChangeMenu.h"
+#include "menu/search/Search.h"
 #include <string>
 #include <vector>
 #include <iostream>

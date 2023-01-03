@@ -24,7 +24,8 @@ void Program::run() {
         while ( getMenuOption(option, menus[currMenuPage].getButtons().size()) )
             cout << "\033[31mPlease insert a valid option: \033[0m";
 
-        menus[currMenuPage].doAction(option - 1);
+        Menu menu = menus[currMenuPage];
+        menu.doAction(option - 1);
     }
 
     cleanMenus();
@@ -48,6 +49,7 @@ void Program::createMainMenu() {
     menus.push_back(Menu("../files/mainMenu"));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 1));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 2));
+    menus[menus.size() - 1].addMenuItem(new Search(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, -1));
 
 }

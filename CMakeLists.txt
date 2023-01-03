@@ -3,6 +3,5 @@ project(aerialTransportation)
 
 set(CMAKE_CXX_STANDARD 17)
 
-
-add_executable(aerialTransportation src/main.cpp src/model/Graph.h src/model/Graph.cpp src/model/Airline.h src/model/Airline.cpp src/Program.h src/Program.cpp src/Database.h src/Database.cpp src/model/Airport.cpp src/model/Airport.h src/menu/Menu.cpp src/menu/MenuItem.cpp src/menu/change/ChangeMenu.cpp src/menu/show/Show.h src/menu/show/Show.cpp src/menu/show/ShowAirport.h src/menu/show/ShowAirport.cpp src/menu/show/ShowAirline.h src/menu/show/ShowAirline.cpp src/model/Coordinate.cpp src/menu/search/DirectFlights.h src/menu/search/DirectFlights.cpp)
+add_executable(aerialTransportation src/main.cpp src/model/Graph.h src/model/Graph.cpp src/model/Airline.h src/model/Airline.cpp src/Program.h src/Program.cpp src/Database.h src/Database.cpp src/model/Airport.cpp src/model/Airport.h src/menu/Menu.cpp src/menu/MenuItem.cpp src/menu/change/ChangeMenu.cpp src/menu/show/Show.h src/menu/show/Show.cpp src/menu/show/ShowAirport.h src/menu/show/ShowAirport.cpp src/menu/show/ShowAirline.h src/menu/show/ShowAirline.cpp src/model/Coordinate.cpp src/menu/search/DirectFlights.h src/menu/search/DirectFlights.cpp src/menu/search/Search.h src/menu/search/Search.cpp)
 
