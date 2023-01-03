@@ -35,9 +35,7 @@ public:
     Graph();
     Graph(int num, bool dir = false);
     Graph(int num, airportHTable airports, bool dir = false);
-    vector<list<pair<string, string>>> minAirportFlightsBFS(string origin, string destination);
-    int minCityFlightsBFS(string origin, string cityDest, airportHTable& airports);
-    int minDistanceFlightsBFS(string origin, Coordinate center, float radius, airportHTable &airports);
+    vector<list<pair<string, string>>> minFlightsBFS(string origin, unordered_set<string> destinations, unordered_set<string> airlines);
     void findPaths(vector<list<pair<string, string>>> &allPaths, string currAirportCode, list<pair<string, string>> aPath);
     void addEdge(string src, string dest, string airline, int weight = 0);
 };

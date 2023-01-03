@@ -109,6 +109,8 @@ void Search::execute() {
     drawMenu(buttons);
     destAirports = chooseAirports();
     airlines = chooseAirlines();
+    trips minimalFlights = getMinimalFlights(originAirports, destAirports, airlines);
+    printMinimalFlights(minimalFlights);
 
 }
 
@@ -119,6 +121,8 @@ vector<string> Search::readMenuButtons() {
     for(string button; getline(file,button);){
         buttons.push_back(button);
     }
+
+    return buttons;
 }
 
 void Search::drawMenu(vector<string> buttons) {
@@ -170,6 +174,7 @@ unordered_set<string> Search::chooseAirports() {
         }
         if(c) cout << "Choose a valid option: ";
     }
+    return input;
 }
 
 unordered_set<string> Search::chooseAirlines() {
@@ -177,15 +182,59 @@ unordered_set<string> Search::chooseAirlines() {
     airlineHTable airlines = database.getAirlines();
     string input;
 
-    cout << "Choose all airlines you accept to travel with. Press 'q' when you are done.";
+    cout << "Choose all airlines you accept to travel with. Press 'q' when you are done. If you accept travelling with every airline quit without adding any airline" << endl;
     while (true) {
-        if (input == "q")
+        cin >> input;
+        if (input == "q") {
+            if (chosenAirlines.empty()) {
+                for (auto airline: airlines)
+                    chosenAirlines.insert(airline.getCode());
+            }
             return chosenAirlines;
+        }
         else if (airlines.find(Airline(input, "", "", "")) != airlines.end()) {
             cout << "Added " << input << " to chosen airlines" << endl;
             chosenAirlines.insert(input);
         }
         else
             cout << input << " isn't a valid airline. Please insert a valid airline: ";
+    }
+}
+
+trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines) {
+    Graph flights = database.getFlightsGraph();
+    trips minimalTrips;
+    trips currTrips;
+
+    for (string originAirport: originAirports) {
+        currTrips = flights.minFlightsBFS(originAirport, destAirports, airlines);
+
+        if (currTrips.empty())
+            continue;
+
+        // Calculated flights are minimal as well
+        if (minimalTrips.empty() || minimalTrips[0].size() == currTrips[0].size()) {
+            minimalTrips.insert(minimalTrips.end(), currTrips.begin(), currTrips.end());
+        }
+
+        // Calculated flights are less than the ones calculated previously
+        else if (minimalTrips[0].size() > currTrips[0].size()) {
+            minimalTrips = currTrips;
+        }
+
+        // Else calculated flights are more than the ones calculated previously and get ignored
+    }
+
+    return minimalTrips;
+}
+
+void Search::printMinimalFlights(trips minimalFlights) {
+    for (auto trip: minimalFlights) {
+        cout << "A trip:" << endl;
+        for (auto airport = trip.begin(); airport != --trip.end(); airport++) {
+            cout << '\t' << airport->first << " --- " + (++airport)->second + " ---> " << airport->first << endl;
+            airport--;
+        }
+        cout << endl;
     }
 }
