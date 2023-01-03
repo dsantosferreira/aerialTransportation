@@ -40,7 +40,7 @@ vector<list<pair<string, string>>> Graph::minFlightsBFS(string origin, unordered
         Node currNode = nodes[currAirportCode];
 
         // Found the first destination
-        if (destinations.find(currAirportCode) != destinations.end()) {
+        if (destinations.find(currAirportCode) != destinations.end() && currAirportCode != origin) {
             minDist = currNode.distance; // Sets the minimal number of flights to get to the destination
 
             // Continues to see if there are other destinations at the same distance adding relevant airports to the paths

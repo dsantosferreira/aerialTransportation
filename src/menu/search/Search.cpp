@@ -67,16 +67,16 @@ unordered_set<string> locationInput(Database& database) {
     float latitude;
     float longitude;
     float maxDist;
-    cout << "Introduce the latitude of the location: ";
+    cout << "Introduce the latitude of the location [-90; 90]: ";
     while (true) {
-        if (getFloat(latitude))
+        if (getFloat(latitude) || latitude < -90 || latitude > 90)
             cout << "Insert a valid float number: ";
         else
             break;
     }
-    cout << "Introduce the longitude of the location: ";
+    cout << "Introduce the longitude of the location [-180; 180]: ";
     while (true){
-        if (getFloat(longitude))
+        if (getFloat(longitude) || longitude < -180 || longitude > 180)
             cout << "Insert a valid float number: ";
         else
             break;
@@ -84,7 +84,7 @@ unordered_set<string> locationInput(Database& database) {
 
     cout << "Introduce the max distance the airport should be (in km): ";
     while (true){
-        if (getFloat(maxDist))
+        if (getFloat(maxDist) || maxDist < 0)
             cout << "Insert a valid float number: ";
         else
             break;
