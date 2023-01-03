@@ -56,3 +56,6 @@ airportHTable Database::getAirports() const {
 airlineHTable Database::getAirlines() const {
     return airlines;
 }
+Graph Database::getGraph() const {
+    return this->flights;
+}

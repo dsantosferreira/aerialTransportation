@@ -1,7 +1,9 @@
 #include <limits>
+#include <set>
 #include "Program.h"
 #include "menu/show/ShowAirport.h"
 #include "menu/show/ShowAirline.h"
+#include "menu/search/DirectFlights.h"
 
 Program::Program() {
     currMenuPage = 0;
@@ -18,9 +20,9 @@ void Program::run() {
     while (currMenuPage != -1) {
         menus[currMenuPage].draw();
 
-        cout << "Insert an option: " << endl;
+        cout << "Insert an option: ";
         while ( getMenuOption(option, menus[currMenuPage].getButtons().size()) )
-            cout << "Please insert a valid option: " << endl;
+            cout << "\033[31mPlease insert a valid option: \033[0m";
 
         menus[currMenuPage].doAction(option - 1);
     }
@@ -52,7 +54,7 @@ void Program::createMainMenu() {
 
 void Program::createMenu1() {
     menus.push_back(Menu("../files/menu1"));
-    menus[menus.size() - 1].addMenuItem(new ShowAirline(currMenuPage, database));
+    menus[menus.size() - 1].addMenuItem(new DirectFlights(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 0));
 
 }

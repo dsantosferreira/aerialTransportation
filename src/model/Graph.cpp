@@ -18,6 +18,11 @@ Graph::Graph(int num, airportHTable airports, bool dir) : n(num), hasDir(dir) {
     }
 }
 
+
+unordered_map<string, Graph::Node> Graph::getNodes() const {
+    return this->nodes;
+}
+
 int Graph::minAirportFlightsBFS(string origin, string destination) {
     // Reset all nodes
     for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
