@@ -4,14 +4,16 @@
 
 #include <algorithm>
 #include "ShowAirport.h"
+#include "../../organizers/AirportOrganizer.h"
 
+ShowAirport::ShowAirport(int &currMenuPage, Database &database) : Show(currMenuPage, database){};
 
-ShowAirport::ShowAirport(int &currMenuPage, Database &database): Show(currMenuPage, database) {};
-
-
-void ShowAirport::execute() {
+void ShowAirport::execute()
+{
     vector<Airport> airports;
-    for( Airport airport: database.getAirports()) airports.push_back(airport);
-    sort(airports.begin(), airports.end(),[](Airport a1,Airport a2){return a1.getName()<a2.getName();});
+    for (Airport airport : database.getAirports())
+        airports.push_back(airport);
+    AirportOrganizer airportOrganizer;
+    airportOrganizer.organize(airports);
     Show::draw<Airport>(airports);
 }

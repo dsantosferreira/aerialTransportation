@@ -5,13 +5,14 @@
 
 using namespace std;
 
-class MenuItem {
+class MenuItem
+{
 protected:
-    int* currMenuPage;
+    int *currMenuPage;
     Database database;
 
 public:
-    MenuItem(int& currMenuPage, Database& database);
+    MenuItem(int &currMenuPage, Database &database);
     virtual void execute() = 0;
 };
 

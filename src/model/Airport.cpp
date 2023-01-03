@@ -3,35 +3,49 @@
 
 using namespace std;
 
-Airport::Airport(string code, string name, string city, string country, float latitude, float longitude) : coordinate(Coordinate(latitude, longitude)) {
+Airport::Airport(string code, string name, string city, string country, float latitude, float longitude) : coordinate(Coordinate(latitude, longitude))
+{
     this->code = code;
     this->name = name;
     this->city = city;
     this->country = country;
 }
+Airport::Airport(string code) : coordinate(Coordinate(0, 0))
+{
+    this->code = code;
+    this->name = "";
+    this->city = "";
+    this->country = "";
+}
 
-string Airport::getCode() const {
+string Airport::getCode() const
+{
     return code;
 }
 
-string Airport::getName() const {
+string Airport::getName() const
+{
     return name;
 }
 
-
-string Airport::getCountry() const {
+string Airport::getCountry() const
+{
     return country;
 }
 
-string Airport::getCity() const {
+string Airport::getCity() const
+{
     return city;
 }
 
-Coordinate Airport::getCoordinate() const {
+Coordinate Airport::getCoordinate() const
+{
     return coordinate;
 }
 
-void Airport::print()const {
-    cout<<this->getCode()<<"       | "<<this->getName();
-    for(int i=0; i<66-this->getName().length();i++)cout<<" ";
+void Airport::print() const
+{
+    cout << this->getCode() << "       | " << this->getName();
+    for (int i = 0; i < 66 - this->getName().length(); i++)
+        cout << " ";
 }

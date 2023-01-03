@@ -5,13 +5,14 @@
 
 using namespace std;
 
-class ChangeMenu : public MenuItem {
+class ChangeMenu : public MenuItem
+{
 private:
     int nextMenu;
+
 public:
-    ChangeMenu(int& currMenuPage, Database& database, int nextMenu);
+    ChangeMenu(int &currMenuPage, Database &database, int nextMenu);
     void execute() override;
 };
-
 
 #endif

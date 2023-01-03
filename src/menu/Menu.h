@@ -9,19 +9,19 @@
 
 using namespace std;
 
-class Menu {
+class Menu
+{
 private:
     vector<string> buttons;
-    vector<MenuItem*> actions;
+    vector<MenuItem *> actions;
 
 public:
     Menu(string path);
     vector<string> getButtons();
     void draw() const;
-    void addMenuItem(MenuItem* menuItem);
+    void addMenuItem(MenuItem *menuItem);
     void doAction(int option);
-    vector<MenuItem*> getActions();
+    vector<MenuItem *> getActions();
 };
-
 
 #endif

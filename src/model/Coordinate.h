@@ -1,10 +1,12 @@
 #ifndef AERIALTRANSPORTATION_COORDINATE_H
 #define AERIALTRANSPORTATION_COORDINATE_H
 
-class Coordinate{
+class Coordinate
+{
 private:
     float latitude;
     float longitude;
+
 public:
     Coordinate();
     Coordinate(float latitude, float longitude);
@@ -13,4 +15,4 @@ public:
     float distance(Coordinate coordinate1) const;
 };
 
-#endif //AERIALTRANSPORTATION_COORDINATE_H
+#endif // AERIALTRANSPORTATION_COORDINATE_H

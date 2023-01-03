@@ -4,12 +4,16 @@
 
 #include <algorithm>
 #include "ShowAirline.h"
-ShowAirline::ShowAirline(int &currMenuPage, Database &database): Show(currMenuPage, database) {};
+#include "../../organizers/AirlineOrganizer.h"
 
+ShowAirline::ShowAirline(int &currMenuPage, Database &database) : Show(currMenuPage, database){};
 
-void ShowAirline::execute() {
+void ShowAirline::execute()
+{
     vector<Airline> airports;
-    for( Airline airport: database.getAirlines()) airports.push_back(airport);
-    sort(airports.begin(), airports.end(),[](Airline a1,Airline a2){return a1.getName()<a2.getName();});
+    for (Airline airport : database.getAirlines())
+        airports.push_back(airport);
+    AirlineOrganizer airlineOrganizer;
+    airlineOrganizer.organize(airports);
     Show::draw<Airline>(airports);
 }

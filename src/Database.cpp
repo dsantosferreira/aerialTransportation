@@ -1,16 +1,19 @@
 #include "Database.h"
 
-Database::Database() {
+Database::Database()
+{
     readAirports();
     readAirlines();
     createFlightsGraph();
 }
 
-void Database::readAirports() {
+void Database::readAirports()
+{
     ifstream in("../files/airports.csv");
     string code, name, city, country, aLine, latitude, longitude;
     getline(in, aLine);
-    while (getline(in, aLine)) {
+    while (getline(in, aLine))
+    {
         istringstream inn(aLine);
         getline(inn, code, ',');
         getline(inn, name, ',');
@@ -22,11 +25,13 @@ void Database::readAirports() {
     }
 }
 
-void Database::readAirlines() {
+void Database::readAirlines()
+{
     ifstream in("../files/airlines.csv");
     string code, name, callSign, country, aLine;
     getline(in, aLine);
-    while (getline(in, aLine)) {
+    while (getline(in, aLine))
+    {
         istringstream inn(aLine);
         getline(inn, code, ',');
         getline(inn, name, ',');
@@ -36,13 +41,15 @@ void Database::readAirlines() {
     }
 }
 
-void Database::createFlightsGraph() {
+void Database::createFlightsGraph()
+{
     flights = Graph(airports.size(), airports, true);
 
     ifstream in("../files/flights.csv");
     string source, target, airline, aLine;
     getline(in, aLine);
-    while (getline(in, aLine)) {
+    while (getline(in, aLine))
+    {
         istringstream inn(aLine);
         getline(inn, source, ',');
         getline(inn, target, ',');
@@ -51,13 +58,24 @@ void Database::createFlightsGraph() {
     }
 }
 
-Graph Database::getFlightsGraph() const {
+Graph Database::getFlightsGraph() const
+{
     return flights;
 }
 
-airportHTable Database::getAirports() const {
+airportHTable Database::getAirports() const
+{
     return airports;
 }
-airlineHTable Database::getAirlines() const {
+airlineHTable Database::getAirlines() const
+{
     return airlines;
+}
+Airline Database::getAirline(string code) const
+{
+    return *airlines.find(Airline(code, "", "", ""));
+}
+Airport Database::getAirport(string code) const
+{
+    return *airports.find(Airport(code));
 }

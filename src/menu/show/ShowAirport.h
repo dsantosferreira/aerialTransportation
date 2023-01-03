@@ -8,12 +8,11 @@
 using namespace std;
 #include "Show.h"
 
-class ShowAirport: public Show{
+class ShowAirport : public Show
+{
 public:
-    ShowAirport(int& currMenuPage, Database& database);
-    void execute()override;
-
+    ShowAirport(int &currMenuPage, Database &database);
+    void execute() override;
 };
 
-
-#endif //AERIALTRANSPORTATION_SHOWAIRPORT_H
+#endif // AERIALTRANSPORTATION_SHOWAIRPORT_H
