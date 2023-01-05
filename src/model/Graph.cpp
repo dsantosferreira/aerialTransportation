@@ -101,7 +101,6 @@ set<string> Graph::reachedAirportsBFS( int maxFlights, string original)  {
     q.push(original);
     nodes[original].distance=0;
     nodes[original].visited=true;
-    list<Edge> el=nodes[original].adj;
     while( !q.empty()){
         string curr= q.front();
         q.pop();

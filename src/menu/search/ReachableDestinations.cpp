@@ -40,7 +40,6 @@ void ReachableDestinations::execute() {
             edges.push_back(airport);
             countries.insert(airport.getCountry());
             cities.insert(pair(airport.getCountry(),airport.getCity()));
-
         }
         AirportOrganizer airportOrganizer;
         airportOrganizer.organize(edges);
