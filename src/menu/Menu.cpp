@@ -22,6 +22,7 @@ vector<string> Menu::getButtons()
 void Menu::draw() const
 {
     system("clear");
+    cout<<"\033[0m";
     string display;
     display = " _____________________________________________ \n"
               "|\033[40m                     Menu                    \033[0m|\n"

@@ -7,7 +7,9 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <queue>
+#include <set>
 #include "Airport.h"
+//#include "../Database.h"
 
 using namespace std;
 
@@ -36,6 +38,7 @@ public:
     void findPaths(vector<list<pair<string, string>>> &allPaths, string currAirportCode, list<pair<string, string>> aPath);
     void addEdge(string src, string dest, string airline, int weight = 0);
     unordered_map<string, Node> getNodes()const;
+    set<string> reachedAirportsBFS(int maxFlights, string original ) ;
 private:
     int n;
     bool hasDir;

@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include <iostream>
+#include <set>
 
 Graph::Graph() {}
 
@@ -87,4 +88,35 @@ void Graph::findPaths(vector<list<pair<string, string>>> &allPaths, string currA
             aPath.erase(aPath.begin());
         }
     }
+}
+
+set<string> Graph::reachedAirportsBFS( int maxFlights, string original)  {
+    for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
+        itr->second.distance = INT32_MAX;
+        itr->second.parents.clear();
+        itr->second.visited=false;
+    }
+    queue<string> q;
+    set<string> visited;
+    q.push(original);
+    nodes[original].distance=0;
+    nodes[original].visited=true;
+    list<Edge> el=nodes[original].adj;
+    while( !q.empty()){
+        string curr= q.front();
+        q.pop();
+        for(auto e:nodes[curr].adj){
+            string neighbour= e.destCode;
+            nodes[neighbour].distance=nodes[curr].distance+1;
+            visited.insert(neighbour);
+            if(nodes[neighbour].distance<maxFlights and !nodes[neighbour].visited ){
+                q.push(neighbour);
+                nodes[neighbour].visited=true;
+            }
+        }
+    }
+    return visited;
+
+
+
 }

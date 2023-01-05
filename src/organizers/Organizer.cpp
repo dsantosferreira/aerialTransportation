@@ -7,9 +7,10 @@ Organizer::Organizer() {}
 void Organizer::draw() const
 {
     system("clear");
+    cout<<"\033[0m";
     string display;
     display = " _____________________________________________ \n"
-              "|\033[40m<<<<<<<<<<<<<>  Order Options  <>>>>>>>>>>>>>\033[0m|\n"
+              "|\033[40m                Order Options                \033[0m|\n"
               "|\033[40m_____________________________________________\033[0m|\n";
 
     for (int i = 0; i < this->buttons.size(); i++)

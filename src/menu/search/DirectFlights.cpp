@@ -15,6 +15,7 @@ DirectFlights::DirectFlights(int &currMenuPage, Database &database) : MenuItem(c
 void DirectFlights::execute()
 {
     system("clear");
+    cout<<"\033[0m";
     set<string> countries;
     set<string> airlines;
     set<string> airports;
@@ -22,7 +23,7 @@ void DirectFlights::execute()
     edges.clear();
     string airport_code;
     int c = 0;
-    cout << "Introduce the airport code: ";
+    cout << "\033[32mIntroduce the airport code: ";
     cin >> airport_code;
     if ((database.getFlightsGraph().getNodes().find(airport_code)) != database.getFlightsGraph().getNodes().end())
     {
@@ -81,7 +82,7 @@ void DirectFlights::execute()
         cout << "\033[31m"
              << "Airport not found!"
              << "\033[0m" << endl;
-        cout << "Enter anything to go back: ";
+        cout << "\033[32mEnter anything to go back: ";
         cin >> airport_code;
     }
 }
@@ -89,16 +90,17 @@ void DirectFlights::execute()
 void DirectFlights::draw(int page, set<string> countries, set<string> airlines, set<string> airports, set<pair<string, string>> cities) const
 {
     system("clear");
-    cout << " _____________________________________________________________________________________" << endl;
-    cout << "|\033[40m                                    Direct flights                                   \033[0m|" << endl;
-    cout << "|\033[40m-------------------------------------------------------------------------------------\033[0m|" << endl;
-    cout << "|\033[40m                                       Page " << page + 1;
+    cout<<"\033[0m";
+    cout << " ____________________________________________________________________________" << endl;
+    cout << "|\033[40m                               Direct flights                               \033[0m|" << endl;
+    cout << "|\033[40m----------------------------------------------------------------------------\033[0m|" << endl;
+    cout << "|\033[40m                                  Page " << page + 1;
     for (int i = 0; i < 3 - to_string(page + 1).length(); i++)
         cout << ' ';
-    cout << "                                      \033[0m|" << endl;
-    cout << "|\033[40m-------------------------------------------------------------------------------------\033[0m|" << endl;
-    cout << "|\033[40m Airlines                | Destination (Airport-Country-City)                        \033[0m|" << endl;
-    cout << "|\033[40m_____________________________________________________________________________________\033[0m|" << endl;
+    cout << "                                  \033[0m|" << endl;
+    cout << "|\033[40m----------------------------------------------------------------------------\033[0m|" << endl;
+    cout << "|\033[40m Airlines   | Destination (Airport-Country-City)                            \033[0m|" << endl;
+    cout << "|\033[40m____________________________________________________________________________\033[0m|" << endl;
     for (int i = 10 * page; i < 10 * page + 10; i++)
     {
         if (i == edges.size())
@@ -112,30 +114,30 @@ void DirectFlights::draw(int page, set<string> countries, set<string> airlines, 
                  << "\033[30m";
         else
             cout << "\033[100m";
-        cout << " " << e.airlineCode << "                     | " << e.destCode << '-' << country << '-' << city;
+        cout << " " << e.airlineCode << "        | " << e.destCode << " - " << country << " - " << city;
         for (int i = 0; i < 53 - country.length() - city.length(); i++)
             cout << " ";
         cout << "\033[0m"
              << "|" << endl;
     }
 
-    cout << "|\033[100m_____________________________________________________________________________________\033[0m|" << endl;
+    cout << "|\033[100m____________________________________________________________________________\033[0m|" << endl;
     cout << "|\033[40m Airlines:" << airlines.size();
-    for (int i = 0; i < 10 - to_string(airlines.size()).length(); i++)
+    for (int i = 0; i < 8 - to_string(airlines.size()).length(); i++)
         cout << ' ';
     cout << "| Airports:" << airports.size();
-    for (int i = 0; i < 11 - to_string(airports.size()).length(); i++)
+    for (int i = 0; i < 9 - to_string(airports.size()).length(); i++)
         cout << ' ';
     cout << "| Countries:" << countries.size();
-    for (int i = 0; i < 11 - to_string(countries.size()).length(); i++)
+    for (int i = 0; i < 8 - to_string(countries.size()).length(); i++)
         cout << ' ';
     cout << "| Cities:" << cities.size();
-    for (int i = 0; i < 11 - to_string(cities.size()).length(); i++)
+    for (int i = 0; i < 9 - to_string(cities.size()).length(); i++)
         cout << ' ';
     cout << "\033[0m|" << endl;
-    cout << "|\033[40m_____________________________________________________________________________________\033[0m|" << endl;
-    cout << "|\033[40m [1]Next                   [2]Previous                   [3]Go Back                  \033[0m|" << endl;
-    cout << "|\033[40m_____________________________________________________________________________________\033[0m|" << endl;
+    cout << "|\033[40m____________________________________________________________________________\033[0m|" << endl;
+    cout << "|\033[40m [1]Next                [2]Previous                [3]Go Back               \033[0m|" << endl;
+    cout << "|\033[40m____________________________________________________________________________\033[0m|" << endl;
     cout << endl
-         << "Choose an option: ";
+         << "\033[32mChoose an option: ";
 }

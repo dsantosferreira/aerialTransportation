@@ -4,6 +4,7 @@
 #include "menu/show/ShowAirport.h"
 #include "menu/show/ShowAirline.h"
 #include "menu/search/DirectFlights.h"
+#include "menu/search/ReachableDestinations.h"
 
 Program::Program()
 {
@@ -17,7 +18,10 @@ Program::Program()
 void Program::run()
 {
     int option;
-
+    int c=0;
+    for(pair<const basic_string<char>, Graph::Node> node:database.getFlightsGraph().getNodes()){
+        c++;
+    }
     while (currMenuPage != -1)
     {
         menus[currMenuPage].draw();
@@ -62,6 +66,7 @@ void Program::createMenu1()
 {
     menus.push_back(Menu("../files/menu1"));
     menus[menus.size() - 1].addMenuItem(new DirectFlights(currMenuPage, database));
+    menus[menus.size() - 1].addMenuItem(new ReachableDestinations(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 0));
 }
 
