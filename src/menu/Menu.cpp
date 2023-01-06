@@ -1,5 +1,8 @@
 #include "Menu.h"
-
+/**Constructor of the Menu, reads a file with buttons and adds them to a vector of strings
+ * @brief Constructor of the Menu
+ * @param path the path to the file containing the buttons of the menu
+ */
 Menu::Menu(string path)
 {
     ifstream file(path);
@@ -8,17 +11,27 @@ Menu::Menu(string path)
         this->buttons.push_back(button);
     }
 }
-
+/**
+ * @brief adds a MenuItem to the menu actions
+ * @param menuItem
+ * complexity O(1)
+ */
 void Menu::addMenuItem(MenuItem *menuItem)
 {
     actions.push_back(menuItem);
 }
-
+/**
+ *
+ * @return buttons
+ */
 vector<string> Menu::getButtons()
 {
     return buttons;
 }
-
+/**
+ * @brief draws the menu
+ * complexity O(N) being N the number of buttons
+ */
 void Menu::draw() const
 {
     system("clear");
@@ -43,12 +56,18 @@ void Menu::draw() const
     display += "|\033[40m_____________________________________________\033[0m|\n";
     cout << display << endl;
 }
-
+/**
+ * @brief will execute the action corresponding to the option chosen
+ * @param option option chosen
+ */
 void Menu::doAction(int option)
 {
     actions[option]->execute();
 }
-
+/**
+ *
+ * @return the actions of the menu
+ */
 vector<MenuItem *> Menu::getActions()
 {
     return actions;

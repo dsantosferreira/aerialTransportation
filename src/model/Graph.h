@@ -9,7 +9,8 @@
 #include <queue>
 #include <set>
 #include "Airport.h"
-//#include "../Database.h"
+#include "Airline.h"
+
 
 using namespace std;
 
@@ -39,6 +40,7 @@ public:
     void addEdge(string src, string dest, string airline, int weight = 0);
     unordered_map<string, Node> getNodes()const;
     set<string> reachedAirportsBFS(int maxFlights, string original ) ;
+    vector<Edge> getEdges(string node);
 private:
     int n;
     bool hasDir;

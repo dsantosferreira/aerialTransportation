@@ -6,8 +6,20 @@
 #include "ReachableDestinations.h"
 #include "../../organizers/AirportOrganizer.h"
 
+/*** Constructs a ReachableDestinations, a class that extends the MenuItem class
+ * @param currpage
+ * @param database
+ */
 ReachableDestinations::ReachableDestinations(int &currpage, Database database) : MenuItem(currpage,database){}
 
+/**This function makes the search for reachable locations from an airport with a max number of flights more user friendly, as it ask for the user inputs
+ * orders the obtain results and displays them in a more pleasant and organize way.
+ * @brief interacts with the user and makes the search for reachable locations from an airport with a max number of flights more user friendly
+ * @see ReachableDestinations::draw(int page, int nCountries,int nCities)
+ * @see ReachableDestinations:: paginationController(int nCountries,int nCities)const
+ * @see Graph::reachedAirportsBFS(int maxFlights, string original)
+ * complexity: O(E+V) being V the number of nodes, E the number of edges
+ */
 void ReachableDestinations::execute() {
     int n;
     string original;
@@ -43,11 +55,17 @@ void ReachableDestinations::execute() {
         }
         AirportOrganizer airportOrganizer;
         airportOrganizer.organize(edges);
-        inputControl(countries.size(),cities.size());
+        paginationController(countries.size(),cities.size());
 
     }
 }
-
+/**Draws a table where it displays the reachable locations, it makes use of a system of pagination where only displays 10 locations in each page
+ * @brief draws a table where it displays the reachable locations
+ * @param page current page
+ * @param nCountries number of countries reached
+ * @param nCities  number of cities reached
+ * complexity: O(1)
+ */
 void ReachableDestinations::draw(int page, int nCountries,int nCities) const
 {
     system("clear");
@@ -97,8 +115,14 @@ void ReachableDestinations::draw(int page, int nCountries,int nCities) const
          << "\033[32mChoose an option: ";
 
 }
-
-void ReachableDestinations:: inputControl(int nCountries,int nCities)const{
+/** Controls the pagination of the drawn table. it ask the user for an input and decides if it as to go to the next page, the previous or go back to the menu
+ * @brief Controls the pagination of the drawn table.
+ * @see ReachableDestinations::draw(int page, int nCountries, int nCities) const
+ * @param nCountries number of countries reached
+ * @param nCities  number of cities reached
+ * complexity: O(1)
+ */
+void ReachableDestinations:: paginationController(int nCountries,int nCities)const{
     int page = 0;
     while (page >= 0 and page < (float)edges.size() / 10.0)
     {

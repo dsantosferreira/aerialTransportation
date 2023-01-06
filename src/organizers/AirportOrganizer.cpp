@@ -4,7 +4,10 @@
 
 #include <limits>
 #include "AirportOrganizer.h"
-
+/** Constructor of AirportOrganizer, pushes into a vector os strings the possible ways of ordering the values and to a vector os lambda functions the
+ * respective lambda functions to order the values
+ * @brief Constructor of AirportOrganizer a class that extends Organizer
+ */
 AirportOrganizer::AirportOrganizer() {
     buttons.push_back("Airport name (Ascendant)");
     buttons.push_back("Airport name (Descendant)");
@@ -23,6 +26,13 @@ AirportOrganizer::AirportOrganizer() {
     functions.push_back([](Airport a1, Airport a2){ return a1.getCity() < a2.getCity(); });
     functions.push_back([](Airport a1, Airport a2){ return a1.getCity() > a2.getCity(); });
 }
+/**Draws a table with different order options and sorts the Airports in different ways depending of the users input, this is done with the use a vector
+ * of lambda functions
+ * @brief organizes the Airports in different ways depending of the users input
+ * @see Organizer::draw() const
+ * @param edges the Airports
+ * complexity O(N.log(N)) being N the number of Airports
+ */
 void AirportOrganizer::organize(vector<Airport> &edges) const
 {
     draw();

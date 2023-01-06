@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "../Database.h"
 #include <iostream>
 #include <set>
 
@@ -115,7 +116,12 @@ set<string> Graph::reachedAirportsBFS( int maxFlights, string original)  {
         }
     }
     return visited;
+}
+vector<Graph::Edge> Graph::getEdges(string node) {
+    vector<Graph::Edge> airports;
 
-
-
+    for(auto e: nodes[node].adj){
+        airports.push_back(e);
+    }
+    return airports;
 }

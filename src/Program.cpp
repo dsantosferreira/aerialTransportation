@@ -5,7 +5,6 @@
 #include "menu/show/ShowAirline.h"
 #include "menu/search/DirectFlights.h"
 #include "menu/search/ReachableDestinations.h"
-
 Program::Program()
 {
     currMenuPage = 0;

@@ -3,7 +3,15 @@
 //
 
 #include "Organizer.h"
+/**Constructor of the class Organizer, Organizer is an abstract class that can be extended with the purpose of organizing in various ways,
+ * various kinds of data
+ * @brief Constructor of the class Organizer
+ */
 Organizer::Organizer() {}
+/**
+ * @brief draws the menu with the options of organization
+ * complexity O(N) being n the number of option there are
+ */
 void Organizer::draw() const
 {
     system("clear");

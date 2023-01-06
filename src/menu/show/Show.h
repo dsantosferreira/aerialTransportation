@@ -16,8 +16,15 @@ public:
     Show(int &currMenuPage, Database &database);
     virtual void execute() = 0;
     template <typename Name>
+    /**
+     * @brief draws a table to display values, uses a system of pagination so it only displays 10 values for page
+     * @tparam Name type of the value we want to display
+     * @param data the values to display
+     * complexity O(1)
+     */
     void draw(vector<Name> data)
     {
+        /* do to the template this functions had to be written here as if it was on the cpp it would not recognize the template*/
         system("clear");
         int start = 0;
         vector<int> starts;
