@@ -1,12 +1,9 @@
-//
-// Created by franciscocardoso on 31-12-2022.
-//
-
 #ifndef AERIALTRANSPORTATION_SHOW_H
 #define AERIALTRANSPORTATION_SHOW_H
 
 #include <iostream>
 #include "../MenuItem.h"
+
 using namespace std;
 
 class Show : public MenuItem

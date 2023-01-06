@@ -1,10 +1,7 @@
 #include <limits>
 #include <set>
 #include "Program.h"
-#include "menu/show/ShowAirport.h"
-#include "menu/show/ShowAirline.h"
-#include "menu/search/DirectFlights.h"
-#include "menu/search/ReachableDestinations.h"
+
 Program::Program()
 {
     currMenuPage = 0;
@@ -74,6 +71,7 @@ void Program::createMenu2()
     menus.push_back(Menu("../files/menu2"));
     menus[menus.size() - 1].addMenuItem(new ShowAirport(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ShowAirline(currMenuPage, database));
+    menus[menus.size() - 1].addMenuItem(new ShowArtPoints(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 0));
 }
 
