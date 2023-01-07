@@ -115,7 +115,25 @@ set<string> Graph::reachedAirportsBFS( int maxFlights, string original)  {
         }
     }
     return visited;
+}
 
-
-
+void Graph::bfs(string origin) {
+    for(auto itr = nodes.begin(); itr != nodes.end(); itr++){
+        itr->second.distance = 0;
+        itr->second.visited = false;
+    }
+    queue<string> q;
+    q.push(origin);
+    nodes[origin].distance = 0;
+    nodes[origin].visited = true;
+    while (!q.empty()){
+        string curr = q.front();
+        q.pop();
+        for(auto e : nodes[curr].adj){
+            string neighbour = e.destCode;
+            nodes[neighbour].distance = nodes[curr].distance + 1;
+            q.push(neighbour);
+            nodes[neighbour].visited = true;
+        }
+    }
 }

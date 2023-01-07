@@ -39,6 +39,7 @@ public:
     void addEdge(string src, string dest, string airline, int weight = 0);
     unordered_map<string, Node> getNodes()const;
     set<string> reachedAirportsBFS(int maxFlights, string original ) ;
+    void bfs(string origin);
 private:
     int n;
     bool hasDir;
