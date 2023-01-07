@@ -5,6 +5,7 @@
 #include "menu/show/ShowAirline.h"
 #include "menu/search/DirectFlights.h"
 #include "menu/search/ReachableDestinations.h"
+#include "menu/statistics/Statistics.h"
 
 Program::Program()
 {
@@ -59,6 +60,7 @@ void Program::createMainMenu()
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 1));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 2));
     menus[menus.size() - 1].addMenuItem(new Search(currMenuPage, database));
+    menus[menus.size() - 1].addMenuItem(new Statistics(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, -1));
 }
 

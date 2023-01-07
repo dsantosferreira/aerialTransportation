@@ -117,7 +117,7 @@ set<string> Graph::reachedAirportsBFS( int maxFlights, string original)  {
     return visited;
 }
 
-void Graph::bfs(string origin) {
+void Graph::bfs(string origin, unordered_set<string> airlines, unordered_set<string> countries, airportHTable airports) {
     for(auto itr = nodes.begin(); itr != nodes.end(); itr++){
         itr->second.distance = 0;
         itr->second.visited = false;
@@ -131,9 +131,12 @@ void Graph::bfs(string origin) {
         q.pop();
         for(auto e : nodes[curr].adj){
             string neighbour = e.destCode;
-            nodes[neighbour].distance = nodes[curr].distance + 1;
-            q.push(neighbour);
-            nodes[neighbour].visited = true;
+
+            if(airlines.find(e.airlineCode) != airlines.end() and countries.find(airports.find(e.destCode)->getCountry()) != countries.end()) {
+                nodes[neighbour].distance = nodes[curr].distance + 1;
+                q.push(neighbour);
+                nodes[neighbour].visited = true;
+            }
         }
     }
 }

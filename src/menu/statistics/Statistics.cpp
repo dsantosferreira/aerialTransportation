@@ -7,13 +7,13 @@ bool comparePair(pair<string, int> a1, pair<string, int> a2){
     return a1.second > a2.second;
 }
 
-int diameter(Database& database){
+int diameter(Database& database, unordered_set<string> airlines, unordered_set<string> countries){
     int max = 0;
     airportHTable airports = database.getAirports();
     Graph flights = database.getFlightsGraph();
     for(auto airport : airports){
         string airportCode = airport.getCode();
-        flights.bfs(airportCode);
+        flights.bfs(airportCode, airlines, countries, airports);
         for(auto node : flights.getNodes()){
             if(node.second.distance > max){
                 max = node.second.distance;
@@ -25,7 +25,7 @@ int diameter(Database& database){
 
 vector<Airport> topAirportFlights(Database& database, unordered_set<string> airlines, unordered_set<string> countries){
     int k = 0;
-    bool c;
+    bool c = true;
     string input;
     while (c){
         bool flag = true;
@@ -64,7 +64,7 @@ vector<Airport> topAirportFlights(Database& database, unordered_set<string> airl
 
 vector<Airport> topAirportAirlines(Database& database, unordered_set<string> airlines, unordered_set<string> countries){
     int k = 0;
-    bool c;
+    bool c = true;
     string input;
     while (c){
         bool flag = true;
@@ -131,13 +131,16 @@ void Statistics::execute() {
     string option;
     unordered_set<string> airlines;
     unordered_set<string> countries;
+    cout << "INSERT OPTION: ";
     while (c) {
         cin >> option;
         if (option.length() == 1 && isdigit(option[0])) {
             int nAirlines = 0;
             int nAirports = 0;
             int nFlights = 0;
-            switch (option[0]) {
+            bool flag = true;
+            string country;
+            switch (option[0]){
                 case '1':
                     c = false;
                     for(auto node : database.getFlightsGraph().getNodes()){
@@ -151,52 +154,52 @@ void Statistics::execute() {
                     cout << "Nº DE AEROPORTOS: " << database.getFlightsGraph().getNodes().size() << endl;
                     cout << "Nº DE VOOS: " << nFlights << endl;
                     cout << "Nº DE COMPANHIAS: " << database.getAirlines().size() << endl;
-                    cout << "DIAMETRO: " << diameter(database) << endl;
+                    cout << "DIAMETRO: " << diameter(database, airlines, countries) << endl;
                     break;
                 case '2':
                     c = false;
-                    bool flag = true;
-                    string country;
-
-                    while (flag){
+                    while (flag) {
                         cin >> country;
-                        for(auto airport : database.getAirports()){
-                            if(airport.getCountry() == country){
+                        for (auto airport: database.getAirports()) {
+                            if (airport.getCountry() == country) {
                                 countries.insert(country);
                                 nAirports++;
                             }
                         }
-                        if(!countries.empty()){
+                        if (!countries.empty()) {
                             flag = false;
-                        }
-                        else{
+                            for (auto node: database.getFlightsGraph().getNodes()) {
+                                if (database.getAirports().find(node.first) != database.getAirports().end() and database.getAirports().find(node.first)->getCountry() == country) {
+                                    nFlights += node.second.adj.size();
+                                }
+                            }
+                        } else {
                             cout << "Country not found: ";
-                        }
-                    }
-                    for(auto node : database.getFlightsGraph().getNodes()){
-                        if(database.getAirports().find(node.first) != database.getAirports().end()){
-                            nFlights += node.second.adj.size();
                         }
                     }
                     cout << "Nº DE AEROPORTOS: " << nAirports << endl;
                     cout << "Nº DE VOOS: " << nFlights << endl;
                     cout << "Nº DE COMPANHIAS: " << nAirlines << endl;
-                    cout << "DIAMETRO: " << diameter(database) << endl;
+                    cout << "DIAMETRO: " << diameter(database, airlines, countries) << endl;
 
                     break;
                 case '3':
                     c = false;
-                    bool f = true;
                     string airline;
-                    while (f){
+                    while (flag){
                         cin >> airline;
-                        for(auto a : database.getAirlines()){
-                            if(a.getCode() == airline) {
-                                airlines.insert(airline);
+                        for(auto node : database.getFlightsGraph().getNodes()){
+                            bool hasAirline = false;
+                            for(auto edge : node.second.adj){
+                                if(edge.airlineCode == airline){
+                                    airlines.insert(airline);
+                                    hasAirline = true;
+                                }
                             }
+                            if(hasAirline) nAirports++;
                         }
                         if(!airlines.empty()){
-                            f = false;
+                            flag = false;
                         } else{
                             cout << "Airline not found: ";
                         }
@@ -204,7 +207,7 @@ void Statistics::execute() {
 
                     cout << "Nº DE AEROPORTOS: " << nAirports << endl;
                     cout << "Nº DE VOOS: " << nFlights << endl;
-                    cout << "DIAMETRO: " << diameter(database) << endl;
+                    cout << "DIAMETRO: " << diameter(database, airlines, countries) << endl;
                     break;
             }
         }
