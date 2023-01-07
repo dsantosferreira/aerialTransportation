@@ -1,18 +1,19 @@
 //
-// Created by franciscocardoso on 31-12-2022.
+// Created by franciscocardoso on 07-01-2023.
 //
 
 #ifndef AERIALTRANSPORTATION_SHOWAIRLINE_H
 #define AERIALTRANSPORTATION_SHOWAIRLINE_H
 
-#include "Show.h"
 
-class ShowAirline : public Show
-{
+#include "../../Database.h"
+#include "../MenuItem.h"
 
+class ShowAirline: public MenuItem{
 public:
     ShowAirline(int &currMenuPage, Database &database);
     void execute() override;
 };
 
-#endif // AERIALTRANSPORTATION_SHOWAIRLINE_H
+
+#endif //AERIALTRANSPORTATION_SHOWAIRLINE_H

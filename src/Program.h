@@ -5,8 +5,8 @@
 #include "menu/change/ChangeMenu.h"
 #include "menu/search/Search.h"
 #include "menu/show/ShowArtPoints.h"
-#include "menu/show/ShowAirport.h"
-#include "menu/show/ShowAirline.h"
+#include "menu/show/ShowAirports.h"
+#include "menu/show/ShowAirlines.h"
 #include "menu/search/DirectFlights.h"
 #include "menu/search/ReachableDestinations.h"
 #include <string>

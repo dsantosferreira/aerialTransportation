@@ -238,7 +238,6 @@ trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_
 
 void Search::printMinimalFlights(trips minimalFlights) {
     cout<<"\033[0m";
-    minimalFlights[0];
     for (auto trip: minimalFlights) {
         cout << "A trip:" << endl;
         for (auto airport = trip.begin(); airport != --trip.end(); airport++) {

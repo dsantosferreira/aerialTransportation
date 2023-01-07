@@ -1,23 +1,54 @@
-#include <algorithm>
+//
+// Created by franciscocardoso on 07-01-2023.
+//
+
 #include "ShowAirline.h"
-#include "../../organizers/AirlineOrganizer.h"
-/**
- * @brief Constructor of the ShowAirline, a class that extends Show
- * @param currMenuPage the current page os the menu
- * @param database database that stores all the information
- */
-ShowAirline::ShowAirline(int &currMenuPage, Database &database) : Show(currMenuPage, database){};
-/**
- * @brief displays all the Airlines
- * @see Show:: paginationController(vector<Name> data)
- * complexity: O(N) being N the number of airlines
- */
-void ShowAirline::execute()
-{
-    vector<Airline> airlines;
-    for (Airline airline : database.getAirlines())
-        airlines.push_back(airline);
-    AirlineOrganizer airlineOrganizer;
-    airlineOrganizer.organize(airlines);
-    paginationController(airlines);
+
+ShowAirline::ShowAirline(int &currMenuPage, Database &database): MenuItem(currMenuPage,database) {
+}
+
+void ShowAirline::execute() {
+    system("clear");
+    cout << "\033[32m Enter the code or the name of the airline you want to find: ";
+    string s;
+    cin >> s;
+    string d;
+    getline(cin,d);
+    s+=d;
+
+    if (s.length() == 3) {
+        if (database.getAirlines().find(Airline(s)) != database.getAirlines().end()) {
+            cout << "\033[0m _______________________________________________________________________________"
+                 << endl;
+            cout << "|\033[100m ";
+            Airline airline = database.getAirline(s);
+            airline.print();
+            cout << "\033[0m|" << endl
+                 << "|\033[100m_______________________________________________________________________________\033[0m|"
+                 << endl;
+            cout << "\033[0m" << endl;
+            cout << endl << "\033[32mEnter anything to go back: ";
+            cin >> s;
+            return;
+        }
+    }
+    for (Airline airline: database.getAirlines()) {
+        if (airline.getName() == s) {
+            cout << "\033[0m _______________________________________________________________________________"
+                 << endl;
+            cout << "|\033[100m ";
+            airline.print();
+            cout << "\033[0m|" << endl
+                 << "|\033[100m_______________________________________________________________________________\033[0m|"
+                 << endl;
+            cout << "\033[0m" << endl;
+            cout << endl << "\033[32mEnter anything to go back: ";
+            cin >> s;
+            return;
+        }
+
+    }
+    cout << "\033[31mAirline not found!";
+    cout << endl << "\033[32mEnter anything to go back: ";
+    cin >> s;
 }
