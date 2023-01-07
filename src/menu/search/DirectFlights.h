@@ -16,7 +16,7 @@ private:
 public:
     DirectFlights(int &currMenuPage, Database &database);
     void execute() override;
-    void draw(int page, int nAirlines,int nAirports, int nCountries, int nCities) const;
+    void draw(int page, int nAirlines,int nAirports, int nCountries, int nCities,int npages) const;
     void paginationController(int nAirlines,int nAirports, int nCountries, int nCities);
     void getData(set<string> &countries, set<string> &airlines, set<string> &airports, set<pair<string, string>>& cities);
 };

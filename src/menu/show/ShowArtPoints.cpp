@@ -6,7 +6,7 @@ void ShowArtPoints::execute() {
     AirportOrganizer airportOrganizer;
     vector<Airport> airports = database.getFlightsGraph().artPoints(database.getAirports(), chooseAirlines());
     airportOrganizer.organize(airports);
-    Show::draw<Airport>(airports);
+    paginationController(airports);
 }
 
 unordered_set<string> ShowArtPoints::chooseAirlines() {

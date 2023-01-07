@@ -2,107 +2,128 @@
 #define AERIALTRANSPORTATION_SHOW_H
 
 #include <iostream>
+#include <cmath>
 #include "../MenuItem.h"
 
 using namespace std;
 
-class Show : public MenuItem
-{
+class Show : public MenuItem {
 private:
 public:
     Show(int &currMenuPage, Database &database);
+
     virtual void execute() = 0;
-    template <typename Name>
+    /** Controls the pagination of the drawn table. it ask the user for an input and decides if it as to go to the next page, the previous, go back to the menu or go to a specif page
+     * @brief Controls the pagination of the drawn table.
+     * @see show::draw(vector<Name> data, int page, int npages)
+     * @tparam Name type of the values we want to display
+     * @param data the values we want to display
+     * complexity O(1)
+     */
+    template<typename Name>
+    void paginationController(vector<Name> data) {
+        /* due to the template this functions had to be written here as if it was on the cpp it would not recognize the template*/
+        int page = 0;
+        while (page >= 0 and page < (float)data.size() / 10.0)
+        {
+            string option;
+            draw(data,page,ceil((float)data.size()/10.0));
+            bool cond = true;
+            while (cond)
+            {
+                cout << endl
+                     << "\033[32mChoose an option[n/p/q] or the number of the page you would want to go[1-"<<ceil((float)data.size()/10.0)<<"]: ";
+                cond = true;
+                cin >> option;
+
+                if (option.length() == 1)
+                {
+                    option= ::toupper(option[0]);
+                    switch (option[0])
+                    {
+                        case 'N':
+                            page++;
+                            cond=false;
+                            break;
+                        case 'P':
+                            page--;
+                            cond=false;
+                            break;
+                        case 'Q':
+                            page = -1;
+                            cond=false;
+                            break;
+                        default:
+                            cond = true;
+                    }
+                }
+                if(cond){
+                    int test;
+                    try{
+                        cond=false;
+                        test= stoi(option);
+                    }catch (invalid_argument){
+                        cond=true;
+                    }
+                    if(!cond){
+                        cond=true;
+                        if(to_string(test).length()==option.length()){
+                            if(test>0 and test <=ceil((float)data.size()/10.0)) {
+                                page=test-1;
+                                cond= false;
+                            }
+                        }
+
+                    }
+                }
+                if (cond)
+                    cout << "\033[31mInvalid input! Please enter a valid input: \033[0m";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+        }
+    };
+
+
     /**
      * @brief draws a table to display values, uses a system of pagination so it only displays 10 values for page
      * @tparam Name type of the value we want to display
      * @param data the values to display
+     * @param page current page
+     * @param npages number of pages that exist
      * complexity O(1)
      */
-    void draw(vector<Name> data)
-    {
-        /* do to the template this functions had to be written here as if it was on the cpp it would not recognize the template*/
+    template<typename Name>
+    void draw(vector<Name> data, int page, int npages) {
+        /* due to the template this functions had to be written here as if it was on the cpp it would not recognize the template*/
         system("clear");
-        int start = 0;
-        vector<int> starts;
-        int previous_start = -1;
-        int end;
-        int currentPage = 1;
-        while (start >= 0 && start < data.size())
-        {
-            system("clear");
-            bool cond = false;
-            for (int s : starts)
-            {
-                if (s == start)
-                    cond = true;
-            }
-            if (!cond)
-                starts.push_back(start);
-            end = start + 15;
-            if (end >= data.size())
-                end = data.size();
-            if (currentPage <= 9)
-            {
-                cout << " ______________________________________________________________________________" << endl;
-                cout << "|\033[40m                                 Page: " << currentPage << "                                      \033[0m|" << endl;
-            }
+        cout << "\033[0m";
+        cout << " ______________________________________________________________________________" << endl;
+        cout << "|\033[40m                                    Page(" << page + 1 << "/" << npages << ")";
+        for (int i = 0; i < 8 - to_string(page + 1).length() - to_string(npages).length(); i++)
+            cout << ' ';
+
+        cout << "                           \033[0m|" << endl;
+        cout << "|\033[40m------------------------------------------------------------------------------\033[0m|" << endl;
+        cout << "|\033[40m Code     | Name                                                              \033[0m|" << endl;
+        cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+        for (int i = 10 * page; i < 10 * page + 10; i++) {
+            if (i == data.size())
+                break;
+            cout<<"|";
+            if (i % 2 == 0)
+                cout << "\033[47m"
+                     << "\033[30m";
             else
-            {
-                cout << " ______________________________________________________________________________ " << endl;
-                cout << "|\033[40m                                 Page: " << currentPage << "                                     \033[0m|" << endl;
-            }
-            cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
-            while (start < end)
-            {
-                cout << '|';
-                if (start % 2 == 0)
-                    cout << "\033[47m"
-                         << "\033[30m";
-                else
-                    cout << "\033[100m";
-                data.at(start).print();
-                start++;
-                cout << "\033[0m|" << endl;
-            }
-            string option;
-            bool c = true;
-            cout << "|\033[100m______________________________________________________________________________\033[0m|" << endl;
-            cout << "|\033[40m [1] Next page              [2] Previous page            [3] Go back          \033[0m|" << endl;
-            cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
-            cout << endl
-                 << "Choose an option: ";
-            while (c)
-            {
-                cin >> option;
-                if (option.length() == 1 && isdigit(option[0]))
-                {
-                    switch (option[0])
-                    {
-                    case '1':
-                        previous_start++;
-                        currentPage++;
-                        c = false;
-                        break;
-                    case '2':
-                        if (previous_start < 0)
-                            start = -1;
-                        else
-                            start = starts.at(previous_start);
-                        previous_start--;
-                        currentPage--;
-                        c = false;
-                        break;
-                    case '3':
-                        start = -1;
-                        c = false;
-                        break;
-                    }
-                }
-                if (c)
-                    cout << "Choose a valid option: ";
-            }
+                cout << "\033[100m";
+            data[i].print();
+            cout<<"\033[0m|"<<endl;
+
         }
+
+        cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+        cout << "|\033[40m [n]Next                 [p]Previous                 [q]Go Back               \033[0m|" << endl;
+        cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
     };
 };
 #endif // AERIALTRANSPORTATION_SHOW_H

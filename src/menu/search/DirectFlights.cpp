@@ -7,6 +7,7 @@
 #include "../../organizers/DirectFlightsOrganizer.h"
 #include <stdlib.h>
 #include <limits>
+#include <cmath>
 
 using namespace std;
 /**
@@ -62,19 +63,21 @@ void DirectFlights::execute()
  * @param nAirports number of possible airports to go
  * @param nCountries number of possible countries to go
  * @param nCities  number of possible cities to go
+ * @param npages the number of pages
  * complexity: O(1)
  */
-void DirectFlights::draw(int page, int nAirlines,int nAirports, int nCountries, int nCities) const
+void DirectFlights::draw(int page, int nAirlines,int nAirports, int nCountries, int nCities,int npages) const
 {
     system("clear");
     cout<<"\033[0m";
     cout << " ____________________________________________________________________________" << endl;
     cout << "|\033[40m                               Direct flights                               \033[0m|" << endl;
     cout << "|\033[40m----------------------------------------------------------------------------\033[0m|" << endl;
-    cout << "|\033[40m                                  Page " << page + 1;
-    for (int i = 0; i < 3 - to_string(page + 1).length(); i++)
+    cout << "|\033[40m                                  Page(" << page + 1<<"/"<<npages<<")";
+    for (int i = 0; i < 8 - to_string(page + 1).length()- to_string(npages).length(); i++)
         cout << ' ';
-    cout << "                                  \033[0m|" << endl;
+
+    cout << "                           \033[0m|" << endl;
     cout << "|\033[40m----------------------------------------------------------------------------\033[0m|" << endl;
     cout << "|\033[40m Airlines   | Destination (Airport-Country-City)                            \033[0m|" << endl;
     cout << "|\033[40m____________________________________________________________________________\033[0m|" << endl;
@@ -113,10 +116,9 @@ void DirectFlights::draw(int page, int nAirlines,int nAirports, int nCountries, 
         cout << ' ';
     cout << "\033[0m|" << endl;
     cout << "|\033[40m____________________________________________________________________________\033[0m|" << endl;
-    cout << "|\033[40m [1]Next                [2]Previous                [3]Go Back               \033[0m|" << endl;
+    cout << "|\033[40m [n]Next                [p]Previous                [q]Go Back               \033[0m|" << endl;
     cout << "|\033[40m____________________________________________________________________________\033[0m|" << endl;
-    cout << endl
-         << "\033[32mChoose an option: ";
+
 }
 /**
  * @brief gets the variety of countries, cities and airports reached as well as the number of airlines available at the airport
@@ -149,31 +151,55 @@ void DirectFlights::paginationController(int nAirlines,int nAirports, int nCount
     while (page >= 0 and page < (float)edges.size() / 10.0)
     {
         string option;
-        draw(page, nAirlines, nAirports, nCountries, nCities);
+        draw(page, nAirlines, nAirports, nCountries, nCities,ceil((float)edges.size()/10.0));
         bool cond = true;
         while (cond)
         {
-            cond = false;
+            cout << endl
+                 << "\033[32mChoose an option[n/p/q] or the number of the page you would want to go[1-"<<ceil((float)edges.size()/10.0)<<"]: ";
+            cond = true;
             cin >> option;
+
             if (option.length() == 1)
             {
+                option= ::toupper(option[0]);
                 switch (option[0])
                 {
-                    case '1':
+                    case 'N':
                         page++;
+                        cond=false;
                         break;
-                    case '2':
+                    case 'P':
                         page--;
+                        cond=false;
                         break;
-                    case '3':
+                    case 'Q':
                         page = -1;
+                        cond=false;
                         break;
                     default:
                         cond = true;
                 }
             }
-            else
-                cond = true;
+            if(cond){
+                int test;
+                try{
+                    cond=false;
+                     test= stoi(option);
+                }catch (invalid_argument){
+                    cond=true;
+                }
+                if(!cond){
+                    cond=true;
+                    if(to_string(test).length()==option.length()){
+                        if(test>0 and test <=ceil((float)edges.size()/10.0)) {
+                            page=test-1;
+                            cond= false;
+                        }
+                    }
+
+                }
+            }
             if (cond)
                 cout << "\033[31mInvalid input! Please enter a valid input: \033[0m";
             cin.clear();

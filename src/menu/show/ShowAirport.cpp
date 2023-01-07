@@ -13,7 +13,7 @@
 ShowAirport::ShowAirport(int &currMenuPage, Database &database) : Show(currMenuPage, database){};
 /**
  * @brief displays all the Airports
- * @see Show:: draw(vector<Name> data)
+ * @see Show:: paginationController(vector<Name> data)
  * complexity: O(N) being N the number of airports
  */
 void ShowAirport::execute()
@@ -23,5 +23,5 @@ void ShowAirport::execute()
         airports.push_back(airport);
     AirportOrganizer airportOrganizer;
     airportOrganizer.organize(airports);
-    Show::draw<Airport>(airports);
+    paginationController(airports);
 }
