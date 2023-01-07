@@ -215,7 +215,6 @@ trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_
 
 void Search::printMinimalFlights(trips minimalFlights) {
     cout<<"\033[0m";
-    minimalFlights[0];
     for (auto trip: minimalFlights) {
         cout << "A trip:" << endl;
         for (auto airport = trip.begin(); airport != --trip.end(); airport++) {
@@ -225,6 +224,7 @@ void Search::printMinimalFlights(trips minimalFlights) {
         cout << endl;
     }
 }
+
 
 void Search::paginationController(trips minimalFlights) const {
     int page = 0;
@@ -332,3 +332,5 @@ void Search::draw(int page, list<pair<string, string>> minimalTrip, int nPages) 
     cout << "|\033[40m [n]Next                  [p]Previous                  [q]Go Back            \033[0m|" << endl;
     cout << "|\033[40m_____________________________________________________________________________\033[0m|" << endl;
 }
+
+
