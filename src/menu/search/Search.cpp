@@ -160,7 +160,7 @@ pair<unordered_set<string>, bool> Search::chooseAirports() {
     bool c = true;
     string option;
     pair<unordered_set<string>, bool> input;
-    cout << "Choose an option: ";
+    cout << "\033[32mChoose an option: ";
     while (c) {
         cin >> option;
         if (option.length() == 1 && isdigit(option[0])) {
@@ -189,6 +189,7 @@ pair<unordered_set<string>, bool> Search::chooseAirports() {
         if(c) cout << "\033[32mChoose a valid option: ";
     }
     return input;
+    cout<<"\033[0m";
 }
 
 unordered_set<string> Search::chooseAirlines() {

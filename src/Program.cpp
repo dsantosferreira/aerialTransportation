@@ -21,10 +21,10 @@ void Program::run()
     {
         menus[currMenuPage].draw();
 
-        cout << "Insert an option: ";
+        cout << "\033[32mInsert an option: ";
         while (getMenuOption(option, menus[currMenuPage].getButtons().size()))
             cout << "\033[31mPlease insert a valid option: \033[0m";
-
+        cout<<"\033[0m";
         Menu menu = menus[currMenuPage];
         menu.doAction(option - 1);
     }

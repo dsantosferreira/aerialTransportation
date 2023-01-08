@@ -41,7 +41,7 @@ void DirectFlightsOrganizer::organize(vector<Graph::Edge> &edges, Database datab
 {
     draw();
     string option;
-    cout << "Choose a way of sorting the results: ";
+    cout << "\033[32mChoose a way of sorting the results: ";
     cin >> option;
     while (option.length() > 1 or (option[0] < 49 or option[0] > 56))
     {
@@ -52,4 +52,5 @@ void DirectFlightsOrganizer::organize(vector<Graph::Edge> &edges, Database datab
     }
     int c = option[0] - 48 - 1;
     sort(edges.begin(), edges.end(), functions[c]);
+    cout<<"\033[0m";
 }
