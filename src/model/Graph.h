@@ -69,6 +69,8 @@ public:
     unordered_map<string, Node> getNodes()const;
     set<string> reachedAirportsBFS(int maxFlights, string original) ;
     vector<Edge> getEdges(string node);
+    int bfs(string origin, const unordered_set<string> &airlines, const unordered_set<string> &countries, const airportHTable &airports);
+
 private:
 
     /** @var number of nodes in the graph*/

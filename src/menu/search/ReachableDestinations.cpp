@@ -11,7 +11,7 @@
  * @param currpage
  * @param database
  */
-ReachableDestinations::ReachableDestinations(int &currpage, Database database) : MenuItem(currpage,database){}
+ReachableDestinations::ReachableDestinations(int &currpage, Database &database) : MenuItem(currpage,database){}
 
 /**This function makes the search for reachable locations from an airport with a maximum number of flights more user friendly, as it ask for the user inputs,
  * orders the obtained results and displays them in a more pleasant and organized way.
@@ -26,6 +26,7 @@ void ReachableDestinations::execute() {
     string original;
     cout<< "\033[32mInsert the airport: ";
     cin>>original;
+    database->getAirports();
     if(database->getAirports().find(original)==database->getAirports().end()){
         cout<<"\033[31mAirport not found!\033[0m"<<endl;
         cout<<"\033[32mEnter anything to go back: ";
