@@ -186,8 +186,9 @@ vector<Graph::Edge> Graph::getEdges(string node) {
     return airports;
 }
 
-int Graph::bfs(string origin, const unordered_set<string>& airlines,const unordered_set<string>& countries,const airportHTable& airports){
-    for(auto itr = nodes.begin(); itr != nodes.end(); itr++){
+
+int Graph::bfs(string origin,const unordered_set<string>& airlines,const unordered_set<string>& countries,const airportHTable& airports) {
+    for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
         itr->second.distance = 0;
         itr->second.visited = false;
     }
@@ -196,15 +197,16 @@ int Graph::bfs(string origin, const unordered_set<string>& airlines,const unorde
     q.push(origin);
     nodes[origin].distance = 0;
     nodes[origin].visited = true;
-    while (!q.empty()){
+    while (!q.empty()) {
         string curr = q.front();
         q.pop();
-        for(auto e : nodes[curr].adj){
+        for (auto e: nodes[curr].adj) {
             string neighbour = e.destCode;
 
-            if( !nodes[neighbour].visited and airlines.find(e.airlineCode) != airlines.end() and countries.find(airports.find(e.destCode)->getCountry()) != countries.end()) {
+            if (!nodes[neighbour].visited and airlines.find(e.airlineCode) != airlines.end() and
+                countries.find(airports.find(e.destCode)->getCountry()) != countries.end()) {
                 nodes[neighbour].distance = nodes[curr].distance + 1;
-                if(nodes[neighbour].distance > result) result = nodes[neighbour].distance;
+                if (nodes[neighbour].distance > result) result = nodes[neighbour].distance;
                 q.push(neighbour);
                 nodes[neighbour].visited = true;
             }
