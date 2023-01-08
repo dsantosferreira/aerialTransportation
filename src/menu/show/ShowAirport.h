@@ -10,8 +10,6 @@
 #include "../MenuItem.h"
 
 class ShowAirport: public MenuItem {
-private:
-    Database database;
 public:
     ShowAirport(int &currMenuPage, Database &database1);
     void execute() override ;

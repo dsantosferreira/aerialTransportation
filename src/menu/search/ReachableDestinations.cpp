@@ -26,7 +26,7 @@ void ReachableDestinations::execute() {
     string original;
     cout<< "\033[32mInsert the airport: ";
     cin>>original;
-    if(database.getAirports().find(original)==database.getAirports().end()){
+    if(database->getAirports().find(original)==database->getAirports().end()){
         cout<<"\033[31mAirport not found!\033[0m"<<endl;
         cout<<"\033[32mEnter anything to go back: ";
         cin>>original;
@@ -47,9 +47,9 @@ void ReachableDestinations::execute() {
         }
         set<string> countries;
         set<pair<string,string>> cities;
-        set<string> aux=database.getFlightsGraph().reachedAirportsBFS(n,original);
+        set<string> aux=database->getFlightsGraph().reachedAirportsBFS(n,original);
         for(string s: aux){
-            Airport airport=database.getAirport(s);
+            Airport airport=database->getAirport(s);
             edges.push_back(airport);
             countries.insert(airport.getCountry());
             cities.insert(pair(airport.getCountry(),airport.getCity()));

@@ -10,12 +10,12 @@ ShowAirlines::ShowAirlines(int &currMenuPage, Database &database) : Show(currMen
 /**
  * @brief displays all the Airlines
  * @see Show:: paginationController(vector<Name> data)
- * complexity: O(N) being N the number of airlines
+ * complexity: O(N log(N)) being N the number of airlines
  */
 void ShowAirlines::execute()
 {
     vector<Airline> airlines;
-    for (Airline airline : database.getAirlines())
+    for (Airline airline : database->getAirlines())
         airlines.push_back(airline);
     AirlineOrganizer airlineOrganizer;
     airlineOrganizer.organize(airlines);

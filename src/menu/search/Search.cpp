@@ -166,15 +166,15 @@ pair<unordered_set<string>, bool> Search::chooseAirports() {
         if (option.length() == 1 && isdigit(option[0])) {
             switch (option[0]) {
                 case '1':
-                    input = {airportInput(database), true};
+                    input = {airportInput(*database), true};
                     c = false;
                     break;
                 case '2':
-                    input = {cityInput(database), true};
+                    input = {cityInput(*database), true};
                     c = false;
                     break;
                 case '3':
-                    input = {locationInput(database), true};
+                    input = {locationInput(*database), true};
                     c = false;
                     break;
                 case '4':
@@ -194,7 +194,7 @@ pair<unordered_set<string>, bool> Search::chooseAirports() {
 unordered_set<string> Search::chooseAirlines() {
     system("clear");
     unordered_set<string> chosenAirlines;
-    airlineHTable airlines = database.getAirlines();
+    airlineHTable airlines = database->getAirlines();
     string input;
 
     cout << "\033[32mChoose all airlines you accept to travel with. Press 'q' when you are done. If you accept travelling with every airline quit without adding any airline" << endl;
@@ -228,7 +228,7 @@ int Search::selectMaximumAirlines() {
 }
 
 trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines, const int maxFlights) {
-    Graph flights = database.getFlightsGraph();
+    Graph flights = database->getFlightsGraph();
     trips minimalTrips;
     trips currTrips;
 

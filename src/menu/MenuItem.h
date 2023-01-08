@@ -9,7 +9,7 @@ class MenuItem
 {
 protected:
     int *currMenuPage;
-    Database database;
+    Database *database;
 
 public:
     MenuItem(int &currMenuPage, Database &database);
