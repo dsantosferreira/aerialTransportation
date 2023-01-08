@@ -16,13 +16,15 @@
 using namespace std;
 
 typedef unordered_set<Airport, airportHash, airportHash> airportHTable;
+typedef vector<list<pair<string, string>>> trips;
+typedef list<pair<string, string>> trip;
 
 class Graph {
 
 public:
     struct Edge {
         string destCode;
-        int weight;
+        float weight;
         string airlineCode;
     };
 
@@ -39,13 +41,13 @@ public:
     Graph();
     Graph(int num, bool dir = false);
     Graph(int num, airportHTable airports, bool dir = false);
-    vector<list<pair<string, string>>> minFlightsBFS(string origin, unordered_set<string> destinations, unordered_set<string> airlines);
-    void findPaths(vector<list<pair<string, string>>> &allPaths, string currAirportCode, list<pair<string, string>> aPath);
-    void addEdge(string src, string dest, string airline, int weight = 0);
+    trips minFlightsBFS(string origin, unordered_set<string> destinations, unordered_set<string> airlines, const int maxAirlines);
+    void findPaths(trips &allPaths, string currAirportCode, trip aPath, const int maxAirlines, unordered_set<string> usedAirlines);
+    void addEdge(string src, string dest, string airline, airportHTable &airports, float weight = 0);
     void artPointsDfs(string origin, int &idx, stack<string> &beingVisited, const airportHTable &airports, const unordered_set<string> &airlines, vector<Airport> &artPoints);
     vector<Airport> artPoints(const airportHTable &airports, const unordered_set<string> &airlines);
     unordered_map<string, Node> getNodes()const;
-    set<string> reachedAirportsBFS(int maxFlights, string original ) ;
+    set<string> reachedAirportsBFS(int maxFlights, string original) ;
     vector<Edge> getEdges(string node);
 private:
     int n;

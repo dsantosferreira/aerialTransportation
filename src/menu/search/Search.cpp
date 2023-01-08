@@ -3,7 +3,7 @@
 
 Search::Search(int &currMenuPage, Database &database) : MenuItem(currMenuPage, database) {}
 
-int getFloat(float &option) {
+bool getFloat(float &option) {
     cin >> option;
     if (cin.fail()) {
         cin.clear();
@@ -11,6 +11,28 @@ int getFloat(float &option) {
         return true;
     }
 
+    return false;
+}
+
+bool getMaximumAirlines(int &maxAirlines) {
+    string option;
+    cin >> option;
+    if (option == "q" || option == "Q") {
+        maxAirlines = INT32_MAX;
+        return false;
+    }
+    else {
+        try{
+            maxAirlines = stoi(option);
+            if (maxAirlines <= 0) {
+                cout << "Insert a value higher than 0: ";
+                return true;
+            }
+        } catch (invalid_argument){
+            cout << "Insert an integer: ";
+            return true;
+        }
+    }
     return false;
 }
 
@@ -101,6 +123,7 @@ unordered_set<string> locationInput(Database& database) {
 void Search::execute() {
     pair<unordered_set<string>, bool> originAirports, destAirports;
     unordered_set<string> airlines;
+    int maxAirlines;
 
     Menu menu("../files/localMenu");
     menu.draw();
@@ -112,7 +135,9 @@ void Search::execute() {
     if (!destAirports.second)
         return;
     airlines = chooseAirlines();
-    trips minimalFlights = getMinimalFlights(originAirports.first, destAirports.first, airlines);
+    maxAirlines = selectMaximumAirlines();
+
+    trips minimalFlights = getMinimalFlights(originAirports.first, destAirports.first, airlines, maxAirlines);
 
     if (minimalFlights.size() != 0)
         paginationController(minimalFlights);
@@ -161,6 +186,7 @@ pair<unordered_set<string>, bool> Search::chooseAirports() {
 }
 
 unordered_set<string> Search::chooseAirlines() {
+    system("clear");
     unordered_set<string> chosenAirlines;
     airlineHTable airlines = database.getAirlines();
     string input;
@@ -186,13 +212,22 @@ unordered_set<string> Search::chooseAirlines() {
     }
 }
 
-trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines) {
+int Search::selectMaximumAirlines() {
+    int maxAirlines;
+
+    system("clear");
+    cout << "Choose the maximum number of airlines you want to travel with: ";
+    while (getMaximumAirlines(maxAirlines));
+    return maxAirlines;
+}
+
+trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines, const int maxFlights) {
     Graph flights = database.getFlightsGraph();
     trips minimalTrips;
     trips currTrips;
 
     for (string originAirport: originAirports) {
-        currTrips = flights.minFlightsBFS(originAirport, destAirports, airlines);
+        currTrips = flights.minFlightsBFS(originAirport, destAirports, airlines, maxFlights);
 
         if (currTrips.empty())
             continue;
@@ -212,19 +247,6 @@ trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_
 
     return minimalTrips;
 }
-
-void Search::printMinimalFlights(trips minimalFlights) {
-    cout<<"\033[0m";
-    for (auto trip: minimalFlights) {
-        cout << "A trip:" << endl;
-        for (auto airport = trip.begin(); airport != --trip.end(); airport++) {
-            cout << '\t' << airport->first << " --- " + (++airport)->second + " ---> " << airport->first << endl;
-            airport--;
-        }
-        cout << endl;
-    }
-}
-
 
 void Search::paginationController(trips minimalFlights) const {
     int page = 0;

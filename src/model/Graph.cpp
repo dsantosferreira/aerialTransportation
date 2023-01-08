@@ -8,7 +8,7 @@ Graph::Graph() {}
 Graph::Graph(int num, bool dir) : n(num), hasDir(dir) {
 }
 
-void Graph::addEdge(string src, string dest, string airline, int weight) {
+void Graph::addEdge(string src, string dest, string airline, airportHTable &airports, float weight) {
     if (nodes.find(src) == nodes.end() || nodes.find(dest) == nodes.end()) return;
     nodes[src].adj.push_back({dest, weight, airline});
     if (!hasDir) nodes[dest].adj.push_back({src, weight, airline});
@@ -77,7 +77,7 @@ void Graph::artPointsDfs(string origin, int &idx, stack<string> &beingVisited, c
         artPoints.push_back(*airports.find(Airport(origin, "", "", "", 0, 0)));
 }
 
-vector<list<pair<string, string>>> Graph::minFlightsBFS(string origin, unordered_set<string> destinations, unordered_set<string> airlines) {
+trips Graph::minFlightsBFS(string origin, unordered_set<string> destinations, unordered_set<string> airlines, const int maxAirlines) {
     // Reset all nodes
     for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
         itr->second.distance = INT32_MAX;
@@ -101,7 +101,7 @@ vector<list<pair<string, string>>> Graph::minFlightsBFS(string origin, unordered
             // Continues to see if there are other destinations at the same distance adding relevant airports to the paths
             while (!toVisit.empty() && nodes[toVisit.front()].distance == minDist) {
                 if (destinations.find(currAirportCode) != destinations.end())
-                    findPaths(allPaths, currAirportCode, list<pair<string, string>>());
+                    findPaths(allPaths, currAirportCode, list<pair<string, string>>(), maxAirlines, unordered_set<string>());
                 toVisit.pop();
                 currAirportCode = toVisit.front();
             }
@@ -128,7 +128,7 @@ vector<list<pair<string, string>>> Graph::minFlightsBFS(string origin, unordered
     return allPaths;
 }
 
-void Graph::findPaths(vector<list<pair<string, string>>> &allPaths, string currAirportCode, list<pair<string, string>> aPath) {
+void Graph::findPaths(trips &allPaths, string currAirportCode, trip aPath, const int maxAirlines, unordered_set<string> usedAirlines) {
     if (nodes[currAirportCode].parents.empty()) {
         Node a = nodes[currAirportCode];
         aPath.insert(aPath.begin(), {currAirportCode, ""});
@@ -137,8 +137,14 @@ void Graph::findPaths(vector<list<pair<string, string>>> &allPaths, string currA
     else {
         Node a = nodes[currAirportCode];
         for (pair<string, string> parent: nodes[currAirportCode].parents) {
+            unordered_set<string> newUsedAirlines = usedAirlines;
+            newUsedAirlines.insert(parent.second);
+
+            if (newUsedAirlines.size() > maxAirlines)
+                return;
+
             aPath.insert(aPath.begin(), {currAirportCode, parent.second});
-            findPaths(allPaths, parent.first, aPath);
+            findPaths(allPaths, parent.first, aPath, maxAirlines, newUsedAirlines);
             aPath.erase(aPath.begin());
         }
     }

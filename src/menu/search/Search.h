@@ -12,8 +12,8 @@ class Search : public MenuItem{
 private:
     pair<unordered_set<string>, bool> chooseAirports();
     unordered_set<string> chooseAirlines();
-    trips getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines);
-    void printMinimalFlights(trips minimalFlights);
+    int selectMaximumAirlines();
+    trips getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines, const int maxFlights);
     void draw(int page, list<pair<string, string>> minimalTrip, int nPages) const;
     void paginationController(trips minimalFlights) const;
 
