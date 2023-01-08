@@ -275,7 +275,6 @@ int Graph::bfs(string origin,const unordered_set<string>& airlines,const unorder
         q.pop();
         for (auto e: nodes[curr].adj) {
             string neighbour = e.destCode;
-
             if (!nodes[neighbour].visited and airlines.find(e.airlineCode) != airlines.end() and
                 countries.find(airports.find(e.destCode)->getCountry()) != countries.end()) {
                 nodes[neighbour].distance = nodes[curr].distance + 1;
