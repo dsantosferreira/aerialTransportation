@@ -2,19 +2,31 @@
 #include "Statistics.h"
 #include "../Menu.h"
 
+/**
+ * @brief Constructor of Statistics a class that extends MenuItem
+ * @param currMenuPage the current page of the menu
+ * @param database database that stores all the information
+ */
 Statistics::Statistics(int &currMenuPage, Database &database) : MenuItem(currMenuPage, database) {}
 
 bool comparePair(pair<string, int> a1, pair<string, int> a2){
     return a1.second > a2.second;
 }
 
-int Statistics::diameter(unordered_set<string> airlines, unordered_set<string> countries){
+/**
+ * @brief Calculates the graph's diameter
+ * @param airline Airline code
+ * @param country Country name
+ * @return diameter
+ * Complexity: O(V * (V + E)) being V the number of vertices in the graph and E de number of edges
+ */
+int Statistics::diameter(string airline, string country){
     int max = 0;
 
     Graph flights = database->getFlightsGraph();
     for(auto airport : database->getFlightsGraph().getNodes()){
         string airportCode = airport.first;
-        int diameter = flights.bfs(airportCode, airlines, countries,database->getAirports());
+        int diameter = flights.diameterBfs(airportCode, airline, country,database->getAirports());
         if(diameter > max) max = diameter;
     }
     return max;
@@ -28,6 +40,14 @@ string space(int s){
     return ans;
 }
 
+/**
+ * @brief Displays the statistics
+ * @param nAirports Amount of airports
+ * @param nFlights Amount of flights
+ * @param nAirlines Amount of airlines
+ * @param diameter Graph's diameter
+ * Complexity: O(1)
+ */
 void drawStatistics(int nAirports, int nFlights, int nAirlines, int diameter ){
     system("clear");
     cout << "\033[0m";
@@ -40,9 +60,17 @@ void drawStatistics(int nAirports, int nFlights, int nAirlines, int diameter ){
     cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
     cout << "|\033[40m                                                                              \033[0m|" << endl;
     cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+    string  a;
+    cout<<"\033[32mEnter anything to go back: ";
+    cin >>a;
 
 }
 
+/**
+ * @brief Displays the top airports
+ * @param airports top airports
+ * Complexity: O(1)
+ */
 void drawTopAirports(vector<Airport> airports){
     system("clear");
     cout << "\033[0m";
@@ -72,15 +100,22 @@ void drawTopAirports(vector<Airport> airports){
     cin >>a;
 }
 
-vector<Airport> Statistics::topAirportFlights(unordered_set<string> airlines, unordered_set<string> countries){
+/**
+ * @brief Calculates the top airports with the most flights
+ * @param airline Airline code
+ * @param country Country name
+ * @return Airports with most flights
+ * Complexity: O(V*E + V*log(V)) being V the number of vertices in the graph and E de number of edges
+ */
+vector<Airport> Statistics::topAirportFlights(string airline, string country){
     int k = 10;
     vector<pair<string, int>> results;
     for(auto node : database->getFlightsGraph().getNodes()){
         bool hasAgency = false;
         Airport airport= database->getAirport(node.first);
-        if(countries.find(airport.getCountry()) != countries.end()) {
+        if(airport.getCountry() == country or country == "") {
             for (auto e: node.second.adj) {
-                if (airlines.find(e.airlineCode) != airlines.end()){
+                if (airline == e.airlineCode or airline == ""){
                     hasAgency = true;
                     break;
                 }
@@ -93,48 +128,61 @@ vector<Airport> Statistics::topAirportFlights(unordered_set<string> airlines, un
     }
     std::sort(results.begin(), results.end(), comparePair);
     vector<Airport> result;
+    if(k > results.size()) k = results.size();
     for(int i = 0; i < k; i++){
         result.push_back(database->getAirport(results[i].first));
     }
     return result;
 }
 
-vector<Airport> Statistics::topAirportAirlines(unordered_set<string> airlines, unordered_set<string> countries){
+/**
+ * @brief Calculates the top airports with most airlines
+ * @param airline Airline code
+ * @param country Country name
+ * @return Airports with most airlines
+ * Complexity: O(V * E + V*log(V)) being V the number of vertices in the graph and E de number of edges
+ */
+vector<Airport> Statistics::topAirportAirlines(string airline, string country){
     int k = 10;
     vector<pair<string, int>> results;
     for(auto node : database->getFlightsGraph().getNodes()){
         Airport airport=database->getAirport(node.first);
-        if(countries.find(airport.getCountry()) != countries.end()) {
+        if(country == "" or airport.getCountry() == country){
             bool hasAgency = false;
-            unordered_set<string> agencies;
+            unordered_set<string> airlines;
             for (auto e: node.second.adj) {
-                if (airlines.find(e.airlineCode) != airlines.end()) {
+                if (e.airlineCode == airline or airline == "") {
                     hasAgency = true;
-                    agencies.insert(e.airlineCode);
+                    airlines.insert(e.airlineCode);
                 }
             }
             if (hasAgency) {
-                pair<string, int> r = {airport.getCode(), agencies.size()};
+                pair<string, int> r = {airport.getCode(), airlines.size()};
                 results.push_back(r);
             }
         }
     }
     std::sort(results.begin(), results.end(), comparePair);
     vector<Airport> result;
+    if(k > results.size()) k = results.size();
     for(int i = 0; i < k; i++){
         result.push_back(database->getAirport(results[i].first));
     }
     return result;
 }
 
+/**
+ * @brief Interacts with the user and makes the search for statistics of the global flights network or an airline or a country ,more user friendly
+ * Complexity: O((V * E) + (V * E + V*log(V)) + (V * (V + E))) being V the number of vertices in the graph and E de number of edges
+ */
 void Statistics::execute() {
     bool c = true;
     Menu menu = Menu("../files/statisticsMainMenu");
     Menu statsMenu = Menu("../files/statisticsMenu");
     menu.draw();
     string option;
-    unordered_set<string> airlines;
-    unordered_set<string> countries;
+    string airline = "";
+    string country = "";
     vector<Airport> airports;
     cout << "\033[32mInsert an option: ";
     while (c) {
@@ -146,11 +194,8 @@ void Statistics::execute() {
             switch (option[0]) {
                 case '1': {
                     c = false;
-                    for(Airline airline: database->getAirlines()) airlines.insert(airline.getCode());
                     for (auto node: database->getFlightsGraph().getNodes()) {
                         nFlights += node.second.adj.size();
-                        auto a = database->getAirports().find(node.first);
-                        countries.insert(a->getCountry());
                     }
                     statsMenu.draw();
                     bool flag = true;
@@ -164,23 +209,18 @@ void Statistics::execute() {
                                     flag = false;
                                     drawStatistics(database->getFlightsGraph().getNodes().size(), nFlights,
                                                    database->getAirlines().size(),
-                                                   diameter(airlines,countries));
-                                    cout << "\033[32mEnter anything to go back: ";
-                                    cin >> s;
-                                    cout<<"\033[0m";
+                                                   diameter(airline,country));
                                     break;
                                 }
                                 case '2': {
                                     flag = false;
-                                    drawTopAirports(topAirportFlights(airlines, countries));
-                                    string s;
+                                    drawTopAirports(topAirportFlights(airline, country));
                                     break;
                                 }
 
                                 case '3': {
                                     flag = false;
-                                    drawTopAirports(topAirportAirlines(airlines, countries));
-                                    string s;
+                                    drawTopAirports(topAirportAirlines(airline, country));
                                     break;
                                 }
 
@@ -197,11 +237,11 @@ void Statistics::execute() {
                     cin >> country;
                     for (auto airport: database->getAirports()) {
                         if (airport.getCountry() == country) {
-                            countries.insert(country);
                             nAirports++;
                         }
                     }
-                    if (!countries.empty()) {
+                    if (nAirports > 0) {
+                        unordered_set<string> airlines;
                         for (auto node: database->getFlightsGraph().getNodes()) {
                             if (database->getAirports().find(node.first)->getCountry() == country) {
                                 nFlights += node.second.adj.size();
@@ -220,24 +260,20 @@ void Statistics::execute() {
                                     case '1':
                                         flag = false;
                                         drawStatistics(nAirports, nFlights, airlines.size(),
-                                                       diameter(airlines, countries));
-                                        cout << "\033[32mEnter anything to go back: ";
-                                        cin >> country;
+                                                       diameter(airline, country));
 
                                         break;
 
                                     case '2':
                                         flag = false;
-                                        drawTopAirports(topAirportFlights(airlines, countries));
-                                        cout << "\033[32mEnter anything to go back: ";
-                                        cin >> country;
+                                        drawTopAirports(topAirportFlights(airline, country));
+
                                         break;
 
                                     case '3':
                                         flag = false;
-                                        drawTopAirports(topAirportAirlines(airlines, countries));
-                                        cout << "\033[32mEnter anything to go back: ";
-                                        cin >> country;
+                                        drawTopAirports(topAirportAirlines(airline, country));
+
                                         break;
 
                                     default:
@@ -264,17 +300,15 @@ void Statistics::execute() {
                             bool hasAirline = false;
                             for (auto edge: node.second.adj) {
                                 if (edge.airlineCode == airline) {
-                                    airlines.insert(airline);
                                     hasAirline = true;
                                     nFlights++;
                                 }
                             }
                             if (hasAirline) {
-                                countries.insert(database->getAirports().find(node.first)->getCountry());
                                 nAirports++;
                             }
                         }
-                        if (!airlines.empty()) {
+                        if (nAirports > 0) {
                             statsMenu.draw();
                             bool flag = true;
                             cout << "\033[32m Insert an option: ";
@@ -284,24 +318,21 @@ void Statistics::execute() {
                                     switch (option[0]) {
                                         case '1':
                                             flag = false;
-                                            drawStatistics(nAirports, nFlights, airlines.size(),
-                                                           diameter(airlines, countries));
-                                            cout << "\033[32mEnter anything to go back: ";
-                                            cin >> airline;
+                                            drawStatistics(nAirports, nFlights, 1,
+                                                           diameter(airline, country));
+
                                             break;
 
                                         case '2':
                                             flag = false;
-                                            drawTopAirports(topAirportFlights(airlines, countries));
-                                            cout << "\033[32mEnter anything to go back: ";
-                                            cin >> airline;
+                                            drawTopAirports(topAirportFlights(airline, country));
+
                                             break;
 
                                         case '3':
                                             flag = false;
-                                            drawTopAirports(topAirportAirlines(airlines, countries));
-                                            cout << "\033[32mEnter anything to go back: ";
-                                            cin >> airline;
+                                            drawTopAirports(topAirportAirlines(airline, country));
+
                                             break;
 
                                         default:

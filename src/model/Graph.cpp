@@ -259,8 +259,16 @@ vector<Graph::Edge> Graph::getEdges(string node) {
     return airports;
 }
 
-
-int Graph::bfs(string origin,const unordered_set<string>& airlines,const unordered_set<string>& countries,const airportHTable& airports) {
+/**
+ * @brief Breadth-First Search to calculate the diameter(max distance reached) starting at the airport provided as input
+ * @param origin airport code to use as start point
+ * @param airline airline that should be used
+ * @param country country where the airport has to be located
+ * @param airports all airports
+ * @return diameter
+ * Complexity: O(V + E) being V the number of vertices in the graph and E de number of edges
+ */
+int Graph::diameterBfs(string origin, string airline, string country, const airportHTable& airports) {
     for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
         itr->second.distance = 0;
         itr->second.visited = false;
@@ -275,8 +283,8 @@ int Graph::bfs(string origin,const unordered_set<string>& airlines,const unorder
         q.pop();
         for (auto e: nodes[curr].adj) {
             string neighbour = e.destCode;
-            if (!nodes[neighbour].visited and airlines.find(e.airlineCode) != airlines.end() and
-                countries.find(airports.find(e.destCode)->getCountry()) != countries.end()) {
+            if (!nodes[neighbour].visited and (e.airlineCode == airline or airline == "") and (airports.find(neighbour)->getCountry() == country or country == "")) {
+
                 nodes[neighbour].distance = nodes[curr].distance + 1;
                 if (nodes[neighbour].distance > result) result = nodes[neighbour].distance;
                 q.push(neighbour);
