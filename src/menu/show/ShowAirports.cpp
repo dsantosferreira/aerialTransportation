@@ -14,12 +14,12 @@ ShowAirports::ShowAirports(int &currMenuPage, Database &database) : Show(currMen
 /**
  * @brief displays all the Airports
  * @see Show:: paginationController(vector<Name> data)
- * complexity: O(N) being N the number of airports
+ * complexity: O(N log(N)) being N the number of airports
  */
 void ShowAirports::execute()
 {
     vector<Airport> airports;
-    for (Airport airport : database.getAirports())
+    for (Airport airport : database->getAirports())
         airports.push_back(airport);
     AirportOrganizer airportOrganizer;
     airportOrganizer.organize(airports);

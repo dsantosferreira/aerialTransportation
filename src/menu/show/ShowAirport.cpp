@@ -24,14 +24,14 @@ void ShowAirport::execute() {
     s+=d;
 
     if (s.length() == 3) {
-        if (database.getAirports().find(Airport(s)) != database.getAirports().end()) {
+        if (database->getAirports().find(Airport(s)) != database->getAirports().end()) {
             cout << "\033[0m _________________________________________________________________________________________"
                  << endl;
             cout << "|\033[40m                                         Airport                                         \033[0m|"<<endl;
             cout << "|\033[40m_________________________________________________________________________________________\033[0m|"<<endl;
 
             cout << "|\033[100m ";
-            Airport airport = database.getAirport(s);
+            Airport airport = database->getAirport(s);
             cout << airport.getCode() << "| " << airport.getName() << "| " << airport.getCountry() << "-"
                  << airport.getCity();
             for (int i = 0;
@@ -48,7 +48,7 @@ void ShowAirport::execute() {
             return;
         }
     }
-        for (Airport airport: database.getAirports()) {
+        for (Airport airport: database->getAirports()) {
             if (airport.getName() == s) {
                 cout << "\033[0m _________________________________________________________________________________________"
                      << endl;

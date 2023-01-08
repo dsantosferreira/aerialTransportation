@@ -8,5 +8,5 @@
 MenuItem::MenuItem(int &currMenuPage, Database &database)
 {
     this->currMenuPage = &currMenuPage;
-    this->database = database;
+    this->database = &database;
 }

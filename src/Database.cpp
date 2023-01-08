@@ -68,7 +68,9 @@ void Database::createFlightsGraph()
         getline(inn, source, ',');
         getline(inn, target, ',');
         getline(inn, airline, ',');
-        flights.addEdge(source, target, airline);
+        Coordinate c1 = airports.find(Airport(source, "", "", "", 0, 0))->getCoordinate();
+        Coordinate c2 = airports.find(Airport(target, "", "", "", 0, 0))->getCoordinate();
+        flights.addEdge(source, target, airline, airports, c1.distance(c2));
     }
 }
 /**

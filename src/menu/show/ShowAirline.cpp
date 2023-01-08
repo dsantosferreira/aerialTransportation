@@ -24,7 +24,7 @@ void ShowAirline::execute() {
     s+=d;
 
     if (s.length() == 3) {
-        if (database.getAirlines().find(Airline(s)) != database.getAirlines().end()) {
+        if (database->getAirlines().find(Airline(s)) != database->getAirlines().end()) {
             cout << "\033[0m _______________________________________________________________________________"
                  << endl;
             cout << "|\033[40m                                    Airline                                    \033[0m|"
@@ -32,7 +32,7 @@ void ShowAirline::execute() {
             cout << "|\033[40m_______________________________________________________________________________\033[0m|"
                  << endl;
             cout << "|\033[100m ";
-            Airline airline = database.getAirline(s);
+            Airline airline = database->getAirline(s);
             airline.print();
             cout << "\033[0m|" << endl
              << "|\033[47m"
@@ -46,7 +46,7 @@ void ShowAirline::execute() {
             return;
         }
     }
-    for (Airline airline: database.getAirlines()) {
+    for (Airline airline: database->getAirlines()) {
         if (airline.getName() == s) {
             cout << "\033[0m _______________________________________________________________________________"
                  << endl;

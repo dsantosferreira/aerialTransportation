@@ -11,7 +11,7 @@
  * @param currpage
  * @param database
  */
-ReachableDestinations::ReachableDestinations(int &currpage, Database database) : MenuItem(currpage,database){}
+ReachableDestinations::ReachableDestinations(int &currpage, Database &database) : MenuItem(currpage,database){}
 
 /**This function makes the search for reachable locations from an airport with a max number of flights more user friendly, as it ask for the user inputs
  * orders the obtain results and displays them in a more pleasant and organize way.
@@ -26,7 +26,8 @@ void ReachableDestinations::execute() {
     string original;
     cout<< "\033[32mInsert the airport: ";
     cin>>original;
-    if(database.getAirports().find(original)==database.getAirports().end()){
+    database->getAirports();
+    if(database->getAirports().find(original)==database->getAirports().end()){
         cout<<"\033[31mAirport not found!\033[0m"<<endl;
         cout<<"\033[32mEnter anything to go back: ";
         cin>>original;
@@ -47,9 +48,9 @@ void ReachableDestinations::execute() {
         }
         set<string> countries;
         set<pair<string,string>> cities;
-        set<string> aux=database.getFlightsGraph().reachedAirportsBFS(n,original);
+        set<string> aux=database->getFlightsGraph().reachedAirportsBFS(n,original);
         for(string s: aux){
-            Airport airport=database.getAirport(s);
+            Airport airport=database->getAirport(s);
             edges.push_back(airport);
             countries.insert(airport.getCountry());
             cities.insert(pair(airport.getCountry(),airport.getCity()));
