@@ -42,7 +42,7 @@ public:
     Graph();
     Graph(int num, bool dir = false);
     Graph(int num, airportHTable airports, bool dir = false);
-    trips minFlightsBFS(string origin, unordered_set<string> destinations, unordered_set<string> airlines, const int maxAirlines);
+    trips minFlightsBFS(unordered_set<string> origin, unordered_set<string> destinations, unordered_set<string> airlines, const int maxAirlines);
     void findPaths(trips &allPaths, string currAirportCode, trip aPath, const int maxAirlines, unordered_set<string> usedAirlines);
     void addEdge(string src, string dest, string airline, airportHTable &airports, float weight = 0);
     void artPointsDfs(string origin, int &idx, stack<string> &beingVisited, const airportHTable &airports, const unordered_set<string> &airlines, vector<Airport> &artPoints);

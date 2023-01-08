@@ -75,7 +75,7 @@ void Graph::artPointsDfs(string origin, int &idx, stack<string> &beingVisited, c
         artPoints.push_back(*airports.find(Airport(origin, "", "", "", 0, 0)));
 }
 
-trips Graph::minFlightsBFS(string origin, unordered_set<string> destinations, unordered_set<string> airlines, const int maxAirlines) {
+trips Graph::minFlightsBFS(unordered_set<string> origins, unordered_set<string> destinations, unordered_set<string> airlines, const int maxAirlines) {
     // Reset all nodes
     for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
         itr->second.distance = INT32_MAX;
@@ -85,15 +85,18 @@ trips Graph::minFlightsBFS(string origin, unordered_set<string> destinations, un
     int minDist; // Distance of the first destination to the origin airport
     trips allPaths;  // Minimal paths from origin to destinations
     queue<string> toVisit; // airports to visit
-    toVisit.push(origin);
-    nodes[origin].distance = 0;
+
+    for (string origin: origins) {
+        toVisit.push(origin);
+        nodes[origin].distance = 0;
+    }
 
     while (!toVisit.empty()) {
         string currAirportCode = toVisit.front();
         Node currNode = nodes[currAirportCode];
 
         // Found the first destination
-        if (destinations.find(currAirportCode) != destinations.end() && currAirportCode != origin) {
+        if (destinations.find(currAirportCode) != destinations.end() && origins.find(currAirportCode) == origins.end()) {
             minDist = currNode.distance; // Sets the minimal number of flights to get to the destination
 
             // Continues to see if there are other destinations at the same distance adding relevant airports to the paths

@@ -170,6 +170,7 @@ bool orderTrips(const trip &t1, const trip &t2) {
  */
 void Search::execute() {
     pair<unordered_set<string>, bool> originAirports, destAirports;
+    Graph g = database->getFlightsGraph();
     unordered_set<string> airlines;
     int maxAirlines;
 
@@ -185,7 +186,7 @@ void Search::execute() {
     airlines = chooseAirlines();
     maxAirlines = selectMaximumAirlines();
 
-    trips minimalFlights = getMinimalFlights(originAirports.first, destAirports.first, airlines, maxAirlines);
+    trips minimalFlights = g.minFlightsBFS(originAirports.first, destAirports.first, airlines, maxAirlines);
 
     sort(minimalFlights.begin(), minimalFlights.end(), orderTrips);
 
@@ -281,33 +282,6 @@ int Search::selectMaximumAirlines() {
     cout << "Choose the maximum number of airlines you want to travel with. Write 'q' if you don't want an upper bound of airlines you travel with: ";
     while (getMaximumAirlines(maxAirlines));
     return maxAirlines;
-}
-
-trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines, const int maxFlights) {
-    Graph flights = database->getFlightsGraph();
-    trips minimalTrips;
-    trips currTrips;
-
-    for (string originAirport: originAirports) {
-        currTrips = flights.minFlightsBFS(originAirport, destAirports, airlines, maxFlights);
-
-        if (currTrips.empty())
-            continue;
-
-        // Calculated flights are minimal as well
-        if (minimalTrips.empty() || minimalTrips[0].first.size() == currTrips[0].first.size()) {
-            minimalTrips.insert(minimalTrips.end(), currTrips.begin(), currTrips.end());
-        }
-
-        // Calculated flights are less than the ones calculated previously
-        else if (minimalTrips[0].first.size() > currTrips[0].first.size()) {
-            minimalTrips = currTrips;
-        }
-
-        // Else calculated flights are more than the ones calculated previously and gets ignored
-    }
-
-    return minimalTrips;
 }
 
 void Search::paginationController(trips minimalFlights) const {
