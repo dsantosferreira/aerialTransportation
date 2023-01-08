@@ -170,11 +170,39 @@ set<string> Graph::reachedAirportsBFS( int maxFlights, string original)  {
     }
     return visited;
 }
+
 vector<Graph::Edge> Graph::getEdges(string node) {
     vector<Graph::Edge> airports;
 
-    for(auto e: nodes[node].adj){
+    for (auto e: nodes[node].adj) {
         airports.push_back(e);
     }
     return airports;
+}
+
+int Graph::bfs(string origin, const unordered_set<string>& airlines,const unordered_set<string>& countries,const airportHTable& airports){
+    for(auto itr = nodes.begin(); itr != nodes.end(); itr++){
+        itr->second.distance = 0;
+        itr->second.visited = false;
+    }
+    int result = 0;
+    queue<string> q;
+    q.push(origin);
+    nodes[origin].distance = 0;
+    nodes[origin].visited = true;
+    while (!q.empty()){
+        string curr = q.front();
+        q.pop();
+        for(auto e : nodes[curr].adj){
+            string neighbour = e.destCode;
+
+            if( !nodes[neighbour].visited and airlines.find(e.airlineCode) != airlines.end() and countries.find(airports.find(e.destCode)->getCountry()) != countries.end()) {
+                nodes[neighbour].distance = nodes[curr].distance + 1;
+                if(nodes[neighbour].distance > result) result = nodes[neighbour].distance;
+                q.push(neighbour);
+                nodes[neighbour].visited = true;
+            }
+        }
+    }
+    return result;
 }
