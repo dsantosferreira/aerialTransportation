@@ -14,7 +14,12 @@ bool getFloat(float &option) {
     return false;
 }
 
-bool getMaximumAirlines(int &maxAirlines) {
+/**
+ * @brief Asks the user for the maximum of airlines he wants to travel with
+ * @param maxAirlines maximum number of airlines to travel with
+ * @return boolean: true if incorrect input was provided, false otherwise
+ */
+bool Search::getMaximumAirlines(int &maxAirlines) {
     string option;
     cin >> option;
     if (option == "q" || option == "Q") {
@@ -36,12 +41,22 @@ bool getMaximumAirlines(int &maxAirlines) {
     return false;
 }
 
-unordered_set<string> airportInput(Database& database) {
+/**
+ * @brief Asks the user for the desired airport code, returning the respective airport
+ * @param database program's database
+ * @return hash table with the desired airport
+ */
+unordered_set<string> Search::airportInput(Database& database) {
     unordered_set<string> result;
     string input;
     cout << "\033[32mIntroduce the airport code: ";
     while (true) {
         cin >> input;
+
+        for (char &c : input) {
+            c = toupper(c);
+        }
+
         if (database.getAirports().find(Airport(input, "", "", "", 0, 0)) == database.getAirports().end()) {
             cout << "\033[31mIntroduce a valid airport code:\033[32m ";
         } else{
@@ -53,7 +68,12 @@ unordered_set<string> airportInput(Database& database) {
     return result;
 }
 
-unordered_set<string> cityInput(Database& database) {
+/**
+ * @brief Asks the user for the desired city, returning the airports in that city
+ * @param database program's database
+ * @return hash table with the airports from the desired city
+ */
+unordered_set<string> Search::cityInput(Database& database) {
     unordered_set<string> result;
     string city;
     cout << "\033[32mIntroduce the city code: ";
@@ -82,7 +102,15 @@ unordered_set<string> cityInput(Database& database) {
     return result;
 }
 
-unordered_set<string> locationInput(Database& database) {
+/**
+ * Asks the user for the desired location's latitude, longitude and radius, forming a circle with the location as its center.
+ * Returns all the airports in the formed circle
+ * @brief Asks the user for the desired a location's latitude and longitude and radius, returning the airports in that area
+ * @param database program's database
+ * @see Coordinate::distance(Coordinate coordinate2) const
+ * @return hash table with the airports from the desired area
+ */
+unordered_set<string> Search::locationInput(Database& database) {
     unordered_set<string> result;
     float latitude;
     float longitude;
@@ -120,10 +148,26 @@ unordered_set<string> locationInput(Database& database) {
     return result;
 }
 
+/**
+ * @brief Compares two trips distance travelled
+ * @param t1 first trip
+ * @param t2 second trip
+ * @return true if first trip's distance travelled is higher than second trip's distance travelled
+ */
 bool orderTrips(const trip &t1, const trip &t2) {
     return t1.second < t2.second;
 }
 
+/**
+ * @brief Helper function that calls all the other methods that ask for input, calculate the minimal flights and print them
+ * @see Menu::draw()
+ * @see Search::chooseAirports()
+ * @see Search::chooseAirlines()
+ * @see Search::(selectMaximumAirlines()
+ * @see Search::getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines, const int maxFlights)
+ * @see Search::paginationController(trips minimalFlights) const;
+ * @see orderTrips(const trip &t1, const trip &t2)
+ */
 void Search::execute() {
     pair<unordered_set<string>, bool> originAirports, destAirports;
     unordered_set<string> airlines;
@@ -156,6 +200,10 @@ void Search::execute() {
     }
 }
 
+/**
+ * @brief Lets the user choose the airports he wants as input (a specific airport, a city, or a location)
+ * @return pair of all the airports chosen and a boolean that checks if the user wanted to return to the main menu
+ */
 pair<unordered_set<string>, bool> Search::chooseAirports() {
     bool c = true;
     string option;
@@ -191,6 +239,10 @@ pair<unordered_set<string>, bool> Search::chooseAirports() {
     return input;
 }
 
+/**
+ * @brief Lets the user choose the airlines he wants to use. Not giving any input makes all the airlines the actual input
+ * @return pair of all the airports chosen and a boolean that checks if the user wanted to return to the main menu
+ */
 unordered_set<string> Search::chooseAirlines() {
     system("clear");
     unordered_set<string> chosenAirlines;
@@ -218,11 +270,15 @@ unordered_set<string> Search::chooseAirlines() {
     }
 }
 
+/**
+ * @brief Lets the user choose the maximum of different airlines he wants to travel with
+ * @return number of maximum different airlines as an integer value
+ */
 int Search::selectMaximumAirlines() {
     int maxAirlines;
 
     system("clear");
-    cout << "Choose the maximum number of airlines you want to travel with: ";
+    cout << "Choose the maximum number of airlines you want to travel with. Write 'q' if you don't want an upper bound of airlines you travel with: ";
     while (getMaximumAirlines(maxAirlines));
     return maxAirlines;
 }
@@ -248,7 +304,7 @@ trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_
             minimalTrips = currTrips;
         }
 
-        // Else calculated flights are more than the ones calculated previously and get ignored
+        // Else calculated flights are more than the ones calculated previously and gets ignored
     }
 
     return minimalTrips;
