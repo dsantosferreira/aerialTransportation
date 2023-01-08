@@ -10,11 +10,11 @@ bool comparePair(pair<string, int> a1, pair<string, int> a2){
 
 int Statistics::diameter(unordered_set<string> airlines, unordered_set<string> countries){
     int max = 0;
-    airportHTable airports = database->getAirports();
+
     Graph flights = database->getFlightsGraph();
-    for(auto airport : airports){
-        string airportCode = airport.getCode();
-        int diameter = flights.bfs(airportCode, airlines, countries, airports);
+    for(auto airport : database->getFlightsGraph().getNodes()){
+        string airportCode = airport.first;
+        int diameter = flights.bfs(airportCode, airlines, countries,database->getAirports());
         if(diameter > max) max = diameter;
     }
     return max;
@@ -40,9 +40,7 @@ void drawStatistics(int nAirports, int nFlights, int nAirlines, int diameter ){
     cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
     cout << "|\033[40m                                                                              \033[0m|" << endl;
     cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
-    string  a;
-    cout<<"\033[32mEnter anything to go back: ";
-    cin >>a;
+
 }
 
 void drawTopAirports(vector<Airport> airports){
@@ -76,20 +74,19 @@ void drawTopAirports(vector<Airport> airports){
 
 vector<Airport> Statistics::topAirportFlights(unordered_set<string> airlines, unordered_set<string> countries){
     int k = 10;
-    auto airports = database->getAirports();
     vector<pair<string, int>> results;
-    for(auto airport : airports){
+    for(auto node : database->getFlightsGraph().getNodes()){
         bool hasAgency = false;
+        Airport airport= database->getAirport(node.first);
         if(countries.find(airport.getCountry()) != countries.end()) {
-            Graph::Node airportNode = database->getFlightsGraph().getNodes().find(airport.getCode())->second;
-            for (auto e: airportNode.adj) {
+            for (auto e: node.second.adj) {
                 if (airlines.find(e.airlineCode) != airlines.end()){
                     hasAgency = true;
                     break;
                 }
             }
             if (hasAgency) {
-                pair<string, int> r = {airport.getCode(), airportNode.adj.size()};
+                pair<string, int> r = {airport.getCode(), node.second.adj.size()};
                 results.push_back(r);
             }
         }
@@ -104,14 +101,13 @@ vector<Airport> Statistics::topAirportFlights(unordered_set<string> airlines, un
 
 vector<Airport> Statistics::topAirportAirlines(unordered_set<string> airlines, unordered_set<string> countries){
     int k = 10;
-    auto airports = database->getAirports();
     vector<pair<string, int>> results;
-    for(auto airport : airports){
+    for(auto node : database->getFlightsGraph().getNodes()){
+        Airport airport=database->getAirport(node.first);
         if(countries.find(airport.getCountry()) != countries.end()) {
             bool hasAgency = false;
             unordered_set<string> agencies;
-            Graph::Node airportNode = database->getFlightsGraph().getNodes().find(airport.getCode())->second;
-            for (auto e: airportNode.adj) {
+            for (auto e: node.second.adj) {
                 if (airlines.find(e.airlineCode) != airlines.end()) {
                     hasAgency = true;
                     agencies.insert(e.airlineCode);
@@ -168,7 +164,7 @@ void Statistics::execute() {
                                     flag = false;
                                     drawStatistics(database->getFlightsGraph().getNodes().size(), nFlights,
                                                    database->getAirlines().size(),
-                                                   12);
+                                                   diameter(airlines,countries));
                                     cout << "\033[32mEnter anything to go back: ";
                                     cin >> s;
                                     cout<<"\033[0m";

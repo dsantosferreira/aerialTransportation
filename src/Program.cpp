@@ -19,7 +19,6 @@ Program::Program()
 void Program::run()
 {
     int option;
-
     while (currMenuPage != -1)
     {
         menus[currMenuPage].draw();
