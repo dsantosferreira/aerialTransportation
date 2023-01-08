@@ -5,6 +5,7 @@
 #include <string>
 #include <stack>
 #include <set>
+#include <iostream>
 #include <unordered_map>
 #include <unordered_set>
 #include <queue>
@@ -16,8 +17,8 @@
 using namespace std;
 
 typedef unordered_set<Airport, airportHash, airportHash> airportHTable;
-typedef vector<list<pair<string, string>>> trips;
-typedef list<pair<string, string>> trip;
+typedef vector<pair<list<pair<string, string>>, float>> trips;
+typedef pair<list<pair<string, string>>, float> trip;
 
 class Graph {
 
@@ -35,7 +36,7 @@ public:
         int num;
         int low;
         int distance;
-        list<pair<string, string>> parents; // First string is the airport; the second is the airline used
+        list<pair<pair<string, string>, float>> parents; // First string is the airport; the second is the airline used
     };
 
     Graph();

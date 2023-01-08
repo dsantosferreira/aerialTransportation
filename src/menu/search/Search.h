@@ -2,11 +2,14 @@
 #define AERIALTRANSPORTATION_SEARCH_H
 
 #include <limits>
+#include <algorithm>
+#include <iomanip>
 #include "../MenuItem.h"
 
 using namespace std;
 
-typedef vector<list<pair<string, string>>> trips;
+typedef vector<pair<list<pair<string, string>>, float>> trips;
+typedef pair<list<pair<string, string>>, float> trip;
 
 class Search : public MenuItem{
 private:
@@ -14,7 +17,7 @@ private:
     unordered_set<string> chooseAirlines();
     int selectMaximumAirlines();
     trips getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines, const int maxFlights);
-    void draw(int page, list<pair<string, string>> minimalTrip, int nPages) const;
+    void draw(int page, trip minimalTrip, int nPages) const;
     void paginationController(trips minimalFlights) const;
 
 public:
@@ -22,4 +25,4 @@ public:
     void execute() override;
 };
 
-#endif //AERIALTRANSPORTATION_SEARCH_H
+#endif

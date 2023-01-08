@@ -120,6 +120,10 @@ unordered_set<string> locationInput(Database& database) {
     return result;
 }
 
+bool orderTrips(const trip &t1, const trip &t2) {
+    return t1.second < t2.second;
+}
+
 void Search::execute() {
     pair<unordered_set<string>, bool> originAirports, destAirports;
     unordered_set<string> airlines;
@@ -138,6 +142,8 @@ void Search::execute() {
     maxAirlines = selectMaximumAirlines();
 
     trips minimalFlights = getMinimalFlights(originAirports.first, destAirports.first, airlines, maxAirlines);
+
+    sort(minimalFlights.begin(), minimalFlights.end(), orderTrips);
 
     if (minimalFlights.size() != 0)
         paginationController(minimalFlights);
@@ -233,12 +239,12 @@ trips Search::getMinimalFlights(unordered_set<string> originAirports, unordered_
             continue;
 
         // Calculated flights are minimal as well
-        if (minimalTrips.empty() || minimalTrips[0].size() == currTrips[0].size()) {
+        if (minimalTrips.empty() || minimalTrips[0].first.size() == currTrips[0].first.size()) {
             minimalTrips.insert(minimalTrips.end(), currTrips.begin(), currTrips.end());
         }
 
         // Calculated flights are less than the ones calculated previously
-        else if (minimalTrips[0].size() > currTrips[0].size()) {
+        else if (minimalTrips[0].first.size() > currTrips[0].first.size()) {
             minimalTrips = currTrips;
         }
 
@@ -310,7 +316,7 @@ void Search::paginationController(trips minimalFlights) const {
     }
 }
 
-void Search::draw(int page, list<pair<string, string>> minimalTrip, int nPages) const {
+void Search::draw(int page, trip minimalTrip, int nPages) const {
     int idx = 0;
     system("clear");
     cout<<"\033[0m";
@@ -326,7 +332,7 @@ void Search::draw(int page, list<pair<string, string>> minimalTrip, int nPages) 
     cout << "|\033[40m         Origin          |       Destination       |         Airline         \033[0m|" << endl;
     cout << "|\033[40m_____________________________________________________________________________\033[0m|" << endl;
 
-    for (auto itr = minimalTrip.begin(); itr != --minimalTrip.end(); itr++) {
+    for (auto itr = minimalTrip.first.begin(); itr != --minimalTrip.first.end(); itr++) {
         cout << "|";
         if (idx % 2 == 0)
             cout << "\033[47m"
@@ -350,6 +356,11 @@ void Search::draw(int page, list<pair<string, string>> minimalTrip, int nPages) 
              << "|" << endl;
 
     }
+    cout << "|\033[100m_____________________________________________________________________________\033[0m|" << endl;
+    cout << fixed << setprecision(2) << "|\033[40m                   Distance travelled: " << minimalTrip.second;
+    for (int i = 0; i < 42 - to_string(minimalTrip.second).length(); i++)
+        cout << ' ';
+    cout << "\033[0m|" << endl;
     cout << "|\033[40m_____________________________________________________________________________\033[0m|" << endl;
     cout << "|\033[40m [n]Next                  [p]Previous                  [q]Go Back            \033[0m|" << endl;
     cout << "|\033[40m_____________________________________________________________________________\033[0m|" << endl;
