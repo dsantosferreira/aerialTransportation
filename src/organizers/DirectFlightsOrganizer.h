@@ -1,7 +1,3 @@
-//
-// Created by franciscocardoso on 03-01-2023.
-//
-
 #ifndef AERIALTRANSPORTATION_DIRECTFLIGHTSORGANIZER_H
 #define AERIALTRANSPORTATION_DIRECTFLIGHTSORGANIZER_H
 
@@ -13,6 +9,7 @@
 class DirectFlightsOrganizer : public Organizer
 {
 private:
+    /** @var Vector of functions to be used to sort the direct flights*/
     vector<function<bool(Graph::Edge e1, Graph::Edge e2)>> functions;
 
 public:

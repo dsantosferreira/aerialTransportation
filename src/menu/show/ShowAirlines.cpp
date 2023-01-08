@@ -1,16 +1,18 @@
 #include <algorithm>
 #include "ShowAirlines.h"
 #include "../../organizers/AirlineOrganizer.h"
+
 /**
  * @brief Constructor of the ShowAirlines, a class that extends Show
  * @param currMenuPage the current page os the menu
  * @param database database that stores all the information
  */
 ShowAirlines::ShowAirlines(int &currMenuPage, Database &database) : Show(currMenuPage, database){};
+
 /**
- * @brief displays all the Airlines
- * @see Show:: paginationController(vector<Name> data)
- * complexity: O(N log(N)) being N the number of airlines
+ * @brief Displays all the Airlines
+ * @see Show::paginationController(vector<Name> data)
+ * Complexity: O(N log(N)) being N the number of airlines
  */
 void ShowAirlines::execute()
 {

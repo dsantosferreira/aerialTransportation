@@ -4,7 +4,10 @@
 class Coordinate
 {
 private:
+    /** @var latitude of the coordinate */
     float latitude;
+
+    /** @var longitude of the coordinate */
     float longitude;
 
 public:

@@ -8,7 +8,9 @@ using namespace std;
 class MenuItem
 {
 protected:
+    /** @var menu we are currently in*/
     int *currMenuPage;
+    /** @var pointer to the program's database*/
     Database *database;
 
 public:

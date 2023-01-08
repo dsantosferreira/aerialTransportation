@@ -1,5 +1,6 @@
 #include <cmath>
 #include "Coordinate.h"
+
 /**
  * @brief Default Constructor of Coordinate
  */
@@ -8,6 +9,7 @@ Coordinate::Coordinate()
     this->latitude = 0;
     this->longitude = 0;
 }
+
 /**
  * Constructor of Coordinate
  * @param latitude
@@ -18,26 +20,28 @@ Coordinate::Coordinate(float latitude, float longitude)
     this->latitude = latitude;
     this->longitude = longitude;
 }
+
 /**
- *
- * @return longitude
+ * @return coordinate's longitude
  */
 float Coordinate::getLongitude() const
 {
     return longitude;
 }
+
 /**
- * @return latitude
+ * @return coordinate's latitude
  */
 float Coordinate::getLatitude() const
 {
     return latitude;
 }
+
 /**
  * @brief Calculates the distance between two coordinates
  * @param coordinate2
  * @return the distance between the two coordinates
- * complexity O(1)
+ * Complexity: Time complexity of the powf, sin, cos, sqrt and asin functions of the Math library from the Standard Library
  */
 float Coordinate::distance(Coordinate coordinate2) const
 {

@@ -8,6 +8,7 @@ using namespace std;
 class ChangeMenu : public MenuItem
 {
 private:
+    /** @var Menu to change to */
     int nextMenu;
 
 public:

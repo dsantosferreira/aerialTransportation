@@ -1,7 +1,3 @@
-//
-// Created by franciscocardoso on 03-01-2023.
-//
-
 #ifndef AERIALTRANSPORTATION_ORGANIZER_H
 #define AERIALTRANSPORTATION_ORGANIZER_H
 #include <iostream>
@@ -15,6 +11,7 @@ using namespace std;
 class Organizer
 {
 protected:
+    /** @var buttons with the different options to organize the data*/
     vector<string> buttons;
 
 public:

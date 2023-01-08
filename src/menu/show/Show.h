@@ -8,14 +8,13 @@
 using namespace std;
 
 class Show : public MenuItem {
-private:
 public:
     Show(int &currMenuPage, Database &database);
 
     virtual void execute() = 0;
-    /** Controls the pagination of the drawn table. it ask the user for an input and decides if it as to go to the next page, the previous, go back to the menu or go to a specif page
+    /** Controls the pagination of the drawn table. It allows the user to quit the menu, or jump to the next, previous or any other page directly.
      * @brief Controls the pagination of the drawn table.
-     * @see show::draw(vector<Name> data, int page, int npages)
+     * @see show::draw(vector<Name> data, int page, int nPages)
      * @tparam Name type of the values we want to display
      * @param data the values we want to display
      * complexity O(1)
@@ -86,21 +85,21 @@ public:
 
 
     /**
-     * @brief draws a table to display values, uses a system of pagination so it only displays 10 values for page
+     * @brief Draws a table to display values, uses a system of pagination that displays 10 values per page
      * @tparam Name type of the value we want to display
      * @param data the values to display
      * @param page current page
-     * @param npages number of pages that exist
+     * @param nPages number of pages that exist
      * complexity O(1)
      */
     template<typename Name>
-    void draw(vector<Name> data, int page, int npages) {
+    void draw(vector<Name> data, int page, int nPages) {
         /* due to the template this functions had to be written here as if it was on the cpp it would not recognize the template*/
         system("clear");
         cout << "\033[0m";
         cout << " ______________________________________________________________________________" << endl;
-        cout << "|\033[40m                                    Page(" << page + 1 << "/" << npages << ")";
-        for (int i = 0; i < 8 - to_string(page + 1).length() - to_string(npages).length(); i++)
+        cout << "|\033[40m                                    Page(" << page + 1 << "/" << nPages << ")";
+        for (int i = 0; i < 8 - to_string(page + 1).length() - to_string(nPages).length(); i++)
             cout << ' ';
 
         cout << "                           \033[0m|" << endl;

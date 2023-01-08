@@ -12,7 +12,19 @@ using namespace std;
 class Airport
 {
 private:
-    string code, name, city, country;
+    /** @var Airport's code. Each airport has a unique code */
+    string code;
+
+    /** @var Airport's name */
+    string name;
+
+    /** @var Airport's city */
+    string city;
+
+    /** @var Airport's country */
+    string country;
+
+    /** @var Airport's coordinate */
     Coordinate coordinate;
 
 public:
@@ -38,7 +50,7 @@ struct airportHash
         {
             hash += airportCode[i] * (i + 1);
         }
-        return hash % 3023;
+        return hash;
     }
 
     bool operator()(const Airport &airport1, const Airport &airport2) const

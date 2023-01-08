@@ -1,17 +1,14 @@
-//
-// Created by franciscocardoso on 07-01-2023.
-//
-
 #include "ShowAirport.h"
-/**Constructor of the class ShowAirport  a class that extends MenuItem
+
+/**Constructor of the class ShowAirport a class that extends MenuItem
  * @brief Constructor of the class ShowAirport
  * @param currMenuPage the current page of the menu
  * @param database the database containing all the information
  */
 ShowAirport::ShowAirport(int &currMenuPage, Database &database) : MenuItem(currMenuPage, database) {
 }
-/**Asks the user for an airport code or name and displays its code/name/country/ city
- * @brief Search for an airport and displays its code/name/country/ city
+/**Asks the user for an airport code or name and displays its code, name, country and city
+ * @brief Search for an airport and displays its code, name, country and city
  * complexity: O(1) when its given the airport code O(N) when its given its name being N the number of airports
  */
 void ShowAirport::execute() {

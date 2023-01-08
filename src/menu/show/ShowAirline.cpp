@@ -1,9 +1,5 @@
-//
-// Created by franciscocardoso on 07-01-2023.
-//
-
 #include "ShowAirline.h"
-/**Constructor of the class ShowAirline  a class that extends MenuItem
+/**Constructor of the class ShowAirline a class that extends MenuItem
  * @brief Constructor of the class ShowAirline
  * @param currMenuPage the current page of the menu
  * @param database the database containing all the information

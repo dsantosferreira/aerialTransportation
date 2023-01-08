@@ -1,5 +1,6 @@
 #include "Database.h"
-/**Constructor of Database, it will read several files and store its information, such as the Airports, Airlines and the flights
+
+/**Constructor of Database, it will read several files and store its information, such as the airports, airlines and the flights
  * @brief Constructor of Database
  * @see Database::readAirports()
  * @see Database::readAirlines()
@@ -11,9 +12,10 @@ Database::Database()
     readAirlines();
     createFlightsGraph();
 }
+
 /**
- * @brief reads the airports from the file and stores its data on an unordered_set
- * complexity O(N) being N the number of Airports
+ * @brief Reads the airports from the file and stores its data on an unordered_set
+ * complexity O(N) being N the number of airports on the file
  */
 void Database::readAirports()
 {
@@ -32,9 +34,10 @@ void Database::readAirports()
         airports.insert(Airport(code, name, city, country, stof(latitude), stof(longitude)));
     }
 }
+
 /**
- * @brief reads the airlines from a file and stores its data on an unordered_set
- * complexity O(N) being N the number of Airlines
+ * @brief Reads the airlines from a file and stores its data on an unordered_set
+ * complexity O(N) being N the number of airlines on the file
  */
 void Database::readAirlines()
 {
@@ -51,9 +54,10 @@ void Database::readAirlines()
         airlines.insert(Airline(code, name, callSign, country));
     }
 }
+
 /**
- * @brief reads the flights from a file and stores its data on a graph
- * complexity O(N) being N the number of flights
+ * @brief Reads the flights from a file and stores its data on a graph
+ * complexity O(N) being N the number of flights on the file
  */
 void Database::createFlightsGraph()
 {
@@ -73,32 +77,33 @@ void Database::createFlightsGraph()
         flights.addEdge(source, target, airline, airports, c1.distance(c2));
     }
 }
+
 /**
- *
  * @return the graph with the flights
  */
 Graph Database::getFlightsGraph() const
 {
     return flights;
 }
+
 /**
- *
- * @return the unordered_set with the Airports
+ * @return the unordered_set with the airports
  */
 airportHTable Database::getAirports() const
 {
     return airports;
 }
+
 /**
- *
- * @return the unordered_set with the Airlines
+ * @return the unordered_set with the airlines
  */
 airlineHTable Database::getAirlines() const
 {
     return airlines;
 }
+
 /**
- * @brief returns the Airline corresponding to the airline code given
+ * @brief Returns the airline corresponding to the airline code provided as input
  * @param code airline code from the airline we want to return
  * @return the airline corresponding to the airline code given
  * complexity O(1)
@@ -107,8 +112,9 @@ Airline Database::getAirline(string code) const
 {
     return *airlines.find(Airline(code, "", "", ""));
 }
+
 /**
- * @brief returns the Airport corresponding to the airport code given
+ * @brief Returns the airport corresponding to the airport code provided as input
  * @param code airport code from the airport we want to return
  * @return the airport corresponding to the airport code given
  * complexity O(1)

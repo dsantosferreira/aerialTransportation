@@ -12,7 +12,10 @@ using namespace std;
 class Menu
 {
 private:
+    /** @var buttons to be printed by the menu */
     vector<string> buttons;
+
+    /** @var action to be taken when a certain option of the menu is chosen */
     vector<MenuItem *> actions;
 
 public:

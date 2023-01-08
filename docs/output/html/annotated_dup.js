@@ -1,0 +1,27 @@
+var annotated_dup =
+[
+    [ "Airline", "class_airline.html", "class_airline" ],
+    [ "airlineHash", "structairline_hash.html", "structairline_hash" ],
+    [ "AirlineOrganizer", "class_airline_organizer.html", "class_airline_organizer" ],
+    [ "Airport", "class_airport.html", "class_airport" ],
+    [ "airportHash", "structairport_hash.html", "structairport_hash" ],
+    [ "AirportOrganizer", "class_airport_organizer.html", "class_airport_organizer" ],
+    [ "ChangeMenu", "class_change_menu.html", "class_change_menu" ],
+    [ "Coordinate", "class_coordinate.html", "class_coordinate" ],
+    [ "Database", "class_database.html", "class_database" ],
+    [ "DirectFlights", "class_direct_flights.html", "class_direct_flights" ],
+    [ "DirectFlightsOrganizer", "class_direct_flights_organizer.html", "class_direct_flights_organizer" ],
+    [ "Graph", "class_graph.html", "class_graph" ],
+    [ "Menu", "class_menu.html", "class_menu" ],
+    [ "MenuItem", "class_menu_item.html", "class_menu_item" ],
+    [ "Organizer", "class_organizer.html", "class_organizer" ],
+    [ "Program", "class_program.html", "class_program" ],
+    [ "ReachableDestinations", "class_reachable_destinations.html", "class_reachable_destinations" ],
+    [ "Search", "class_search.html", "class_search" ],
+    [ "Show", "class_show.html", "class_show" ],
+    [ "ShowAirline", "class_show_airline.html", "class_show_airline" ],
+    [ "ShowAirlines", "class_show_airlines.html", "class_show_airlines" ],
+    [ "ShowAirport", "class_show_airport.html", "class_show_airport" ],
+    [ "ShowAirports", "class_show_airports.html", "class_show_airports" ],
+    [ "ShowArtPoints", "class_show_art_points.html", "class_show_art_points" ]
+];

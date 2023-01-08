@@ -8,6 +8,7 @@
  * @brief Constructor of the class Organizer
  */
 Organizer::Organizer() {}
+
 /**
  * @brief draws the menu with the options of organization
  * complexity O(N) being n the number of option there are

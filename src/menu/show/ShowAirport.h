@@ -1,7 +1,3 @@
-//
-// Created by franciscocardoso on 07-01-2023.
-//
-
 #ifndef AERIALTRANSPORTATION_SHOWAIRPORT_H
 #define AERIALTRANSPORTATION_SHOWAIRPORT_H
 

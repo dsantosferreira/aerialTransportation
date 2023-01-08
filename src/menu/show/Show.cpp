@@ -1,7 +1,3 @@
-//
-// Created by franciscocardoso on 31-12-2022.
-//
-
 #include "Show.h"
 /**
  * @brief Constructor of Show a class that extends MenuItem

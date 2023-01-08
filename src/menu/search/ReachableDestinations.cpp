@@ -13,11 +13,11 @@
  */
 ReachableDestinations::ReachableDestinations(int &currpage, Database database) : MenuItem(currpage,database){}
 
-/**This function makes the search for reachable locations from an airport with a max number of flights more user friendly, as it ask for the user inputs
- * orders the obtain results and displays them in a more pleasant and organize way.
- * @brief interacts with the user and makes the search for reachable locations from an airport with a max number of flights more user friendly
- * @see ReachableDestinations::draw(int page, int nCountries,int nCities)
- * @see ReachableDestinations:: paginationController(int nCountries,int nCities)const
+/**This function makes the search for reachable locations from an airport with a maximum number of flights more user friendly, as it ask for the user inputs,
+ * orders the obtained results and displays them in a more pleasant and organized way.
+ * @brief Interacts with the user and makes the search for reachable locations from an airport with a maximum number of flights more user friendly
+ * @see ReachableDestinations::draw(int page, int nCountries,int nCities, int nPages)
+ * @see ReachableDestinations:: paginationController(int nCountries,int nCities) const
  * @see Graph::reachedAirportsBFS(int maxFlights, string original)
  * complexity: O(E+V) being V the number of nodes, E the number of edges
  */
@@ -61,22 +61,22 @@ void ReachableDestinations::execute() {
     }
 }
 /**Draws a table where it displays the reachable locations, it makes use of a system of pagination where only displays 10 locations in each page
- * @brief draws a table where it displays the reachable locations
+ * @brief Draws a table where it displays the reachable locations
  * @param page current page
  * @param nCountries number of countries reached
- * @param nCities  number of cities reached
- * @param npages number of pages
+ * @param nCities number of cities reached
+ * @param nPages number of pages
  * complexity: O(1)
  */
-void ReachableDestinations::draw(int page, int nCountries,int nCities,int npages) const
+void ReachableDestinations::draw(int page, int nCountries,int nCities,int nPages) const
 {
     system("clear");
     cout<<"\033[0m";
     cout <<         " _______________________________________________________________" << endl;
     cout << "|\033[40m                     Reachable Destinations                    \033[0m|" << endl;
     cout << "|\033[40m---------------------------------------------------------------\033[0m|" << endl;
-    cout << "|\033[40m                           Page ("<<page +1<<"/"<<npages<<")";
-    for (int i = 0; i < 8 - to_string(page + 1).length()- to_string(npages).length(); i++)
+    cout << "|\033[40m                           Page ("<<page +1<<"/"<<nPages<<")";
+    for (int i = 0; i < 8 - to_string(page + 1).length()- to_string(nPages).length(); i++)
         cout << ' ';
     cout << "                    \033[0m|" << endl;
     cout << "|\033[40m---------------------------------------------------------------\033[0m|" << endl;
@@ -116,9 +116,9 @@ void ReachableDestinations::draw(int page, int nCountries,int nCities,int npages
 
 
 }
-/** Controls the pagination of the drawn table. it ask the user for an input and decides if it as to go to the next page, the previous or go back to the menu
+/** Controls the pagination of the drawn table. It allows the user to quit the menu, or jump to the next, previous or any other page directly.
  * @brief Controls the pagination of the drawn table.
- * @see ReachableDestinations::draw(int page, int nCountries, int nCities) const
+ * @see ReachableDestinations::draw(int page, int nCountries, int nCities, int nPages) const
  * @param nCountries number of countries reached
  * @param nCities  number of cities reached
  * complexity: O(1)

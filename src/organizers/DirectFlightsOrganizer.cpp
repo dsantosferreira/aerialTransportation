@@ -1,11 +1,7 @@
-//
-// Created by franciscocardoso on 03-01-2023.
-//
-
 #include <limits>
 #include "DirectFlightsOrganizer.h"
 #include "../Database.h"
-/** Constructor of DirectFlightsOrganizer, pushes into a vector os strings the possible ways of ordering the values and to a vector os lambda functions the
+/** Constructor of DirectFlightsOrganizer, pushes into a vector of strings the possible ways of ordering the values and to a vector of lambda functions the
  * respective lambda functions to order the values
  * @brief Constructor of DirectFlightsOrganizer a class that extends Organizer
  * @param database database that contains all the data
@@ -31,7 +27,7 @@ DirectFlightsOrganizer::DirectFlightsOrganizer(Database database) : Organizer()
 }
 /**Draws a table with different order options and sorts the direct flights in different ways depending of the users input, this is done with the use a vector
  * of lambda functions
- * @brief organizes the direct flights in different ways depending of the users input
+ * @brief Organizes the direct flights in different ways depending of the users input
  * @see Organizer::draw() const
  * @param edges the direct flights
  * @param database database where we store all the information

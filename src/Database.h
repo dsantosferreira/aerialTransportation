@@ -16,8 +16,13 @@ typedef unordered_set<Airline, airlineHash, airlineHash> airlineHTable;
 class Database
 {
 private:
+    /** @var Hash table of all the airports*/
     airportHTable airports;
+
+    /** @var Hash table of all the airlines*/
     airlineHTable airlines;
+
+    /** @var Graph where the nodes represent all the airports and the edges represent all the available flights*/
     Graph flights;
 
 public:
