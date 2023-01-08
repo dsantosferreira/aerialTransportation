@@ -19,10 +19,7 @@ Program::Program()
 void Program::run()
 {
     int option;
-    int c=0;
-    for(pair<const basic_string<char>, Graph::Node> node:database.getFlightsGraph().getNodes()){
-        c++;
-    }
+
     while (currMenuPage != -1)
     {
         menus[currMenuPage].draw();
@@ -75,6 +72,9 @@ void Program::createMenu1()
 void Program::createMenu2()
 {
     menus.push_back(Menu("../files/menu2"));
+    menus[menus.size() - 1].addMenuItem(new ShowAirports(currMenuPage, database));
+    menus[menus.size() - 1].addMenuItem(new ShowAirlines(currMenuPage, database));
+    menus[menus.size() - 1].addMenuItem(new ShowArtPoints(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ShowAirport(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ShowAirline(currMenuPage, database));
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 0));

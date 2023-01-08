@@ -1,18 +1,21 @@
 //
-// Created by franciscocardoso on 31-12-2022.
+// Created by franciscocardoso on 07-01-2023.
 //
 
 #ifndef AERIALTRANSPORTATION_SHOWAIRPORT_H
 #define AERIALTRANSPORTATION_SHOWAIRPORT_H
 
-using namespace std;
-#include "Show.h"
 
-class ShowAirport : public Show
-{
+#include "../../Database.h"
+#include "../MenuItem.h"
+
+class ShowAirport: public MenuItem {
+private:
+    Database database;
 public:
-    ShowAirport(int &currMenuPage, Database &database);
-    void execute() override;
+    ShowAirport(int &currMenuPage, Database &database1);
+    void execute() override ;
 };
 
-#endif // AERIALTRANSPORTATION_SHOWAIRPORT_H
+
+#endif //AERIALTRANSPORTATION_SHOWAIRPORT_H

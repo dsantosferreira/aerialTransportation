@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "Statistics.h"
+#include "../Menu.h"
 
 Statistics::Statistics(int &currMenuPage, Database &database) : MenuItem(currMenuPage, database) {}
 
@@ -7,7 +8,7 @@ bool comparePair(pair<string, int> a1, pair<string, int> a2){
     return a1.second > a2.second;
 }
 
-int diameter(Database& database, unordered_set<string> airlines, unordered_set<string> countries){
+int Statistics::diameter(unordered_set<string> airlines, unordered_set<string> countries){
     int max = 0;
     airportHTable airports = database.getAirports();
     Graph flights = database.getFlightsGraph();
@@ -19,19 +20,56 @@ int diameter(Database& database, unordered_set<string> airlines, unordered_set<s
     return max;
 }
 
-vector<Airport> topAirportFlights(Database& database, unordered_set<string> airlines, unordered_set<string> countries){
-    int k = 0;
-    bool c = true;
-    string input;
-    while (c){
-        bool flag = true;
-        cin >> input;
-        for(char s : input){
-            if(!isdigit(s)) flag = false;
-        }
-        if(flag) k = stoi(input);
-        if(k > 0) c = false;
+string space(int s){
+    string ans;
+    for(int i = 0; i < s; i++){
+        ans.push_back(' ');
     }
+    return ans;
+}
+
+void drawStatistics(int nAirports, int nFlights, int nAirlines, int diameter ){
+    system("clear");
+    cout << "\033[0m";
+    cout << " ______________________________________________________________________________" << endl;
+    cout << "|\033[40m                                    Statistics                                \033[0m|" << endl;
+    cout << "|\033[40m------------------------------------------------------------------------------\033[0m|" << endl;
+    cout << "|\033[40m Airports     | Flights      | Airlines     | Diameter     |                  \033[0m|" << endl;
+    cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+    cout << "|\033[47m " << nAirports << space(13-to_string(nAirports).length())<<"| "<< nFlights << space(13-to_string(nFlights).length()) <<"| "<< nAirlines << space(13-to_string(nAirlines).length()) <<"| "<< diameter <<space(13-to_string(diameter).length()) <<"|                  \033[0m|" << endl;
+    cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+    cout << "|\033[40m                                                                              \033[0m|" << endl;
+    cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+}
+
+void drawTopAirports(vector<Airport> airports){
+    system("clear");
+    cout << "\033[0m";
+    cout << " ______________________________________________________________________________" << endl;
+    cout << "|\033[40m                                  Top Airports                                \033[0m|" << endl;
+    cout << "|\033[40m------------------------------------------------------------------------------\033[0m|" << endl;
+    cout << "|\033[40m Code     | Name                                                              \033[0m|" << endl;
+    cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+    int i = 0;
+    for(Airport airport : airports){
+        cout << "|";
+        if(i%2 == 0){
+            cout << "\033[47m"
+                 << "\033[30m";
+        }
+        else{
+            cout << "\033[100m";
+        }
+        cout << " " << airport.getCode() << space(9-airport.getCode().length()) << "| " << airport.getName() << space(66 - airport.getName().length()) << "\033[0m|" << endl;
+        i++;
+    }
+    cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+    cout << "|\033[40m                                                                              \033[0m|" << endl;
+    cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+}
+
+vector<Airport> Statistics::topAirportFlights(unordered_set<string> airlines, unordered_set<string> countries){
+    int k = 10;
     auto airports = database.getAirports();
     vector<pair<string, int>> results;
     for(auto airport : airports){
@@ -58,19 +96,8 @@ vector<Airport> topAirportFlights(Database& database, unordered_set<string> airl
     return result;
 }
 
-vector<Airport> topAirportAirlines(Database& database, unordered_set<string> airlines, unordered_set<string> countries){
-    int k = 0;
-    bool c = true;
-    string input;
-    while (c){
-        bool flag = true;
-        cin >> input;
-        for(char s : input){
-            if(!isdigit(s)) flag = false;
-        }
-        if(flag) k = stoi(input);
-        if(k > 0) c = false;
-    }
+vector<Airport> Statistics::topAirportAirlines(unordered_set<string> airlines, unordered_set<string> countries){
+    int k = 10;
     auto airports = database.getAirports();
     vector<pair<string, int>> results;
     for(auto airport : airports){
@@ -98,122 +125,204 @@ vector<Airport> topAirportAirlines(Database& database, unordered_set<string> air
     return result;
 }
 
-void topAirport(Database& database, unordered_set<string> agencies, unordered_set<string> countries){
-    bool c = true;
-    vector<Airport> result;
-    string option;
-    while(c){
-        cin >> option;
-        if(option.length() == 1 && isdigit(option[0])){
-            switch (option[0]) {
-                case '1':
-                    result = topAirportFlights(database, agencies, countries);
-                    c = false;
-                    break;
-                case '2':
-                    result = topAirportAirlines(database, agencies, countries);
-                    c = false;
-                    break;
-
-            }
-        }
-    }
-
-}
-
-
 void Statistics::execute() {
     bool c = true;
+    Menu menu = Menu("../files/statisticsMainMenu");
+    Menu statsMenu = Menu("../files/statisticsMenu");
+    menu.draw();
     string option;
     unordered_set<string> airlines;
     unordered_set<string> countries;
-    cout << "INSERT OPTION: ";
+    vector<Airport> airports;
+    cout << "Insert an option: ";
     while (c) {
         cin >> option;
         if (option.length() == 1 && isdigit(option[0])) {
             int nAirports = 0;
             int nFlights = 0;
-            bool flag = true;
             string country;
-            switch (option[0]){
-                case '1':
+            switch (option[0]) {
+                case '1':{
                     c = false;
-                    for(auto node : database.getFlightsGraph().getNodes()){
-                        for(auto e : node.second.adj){
+                    for (auto node: database.getFlightsGraph().getNodes()) {
+                        for (auto e: node.second.adj) {
                             airlines.insert(e.airlineCode);
                         }
                         nFlights += node.second.adj.size();
                         auto a = database.getAirports().find(node.first);
                         countries.insert(a->getCountry());
                     }
-                    cout << "Nº DE AEROPORTOS: " << database.getFlightsGraph().getNodes().size() << endl;
-                    cout << "Nº DE VOOS: " << nFlights << endl;
-                    cout << "Nº DE COMPANHIAS: " << database.getAirlines().size() << endl;
-                    cout << "DIAMETRO: " << diameter(database, airlines, countries) << endl;
-                    break;
-                case '2':
-                    c = false;
+
+                    statsMenu.draw();
+                    bool flag = true;
+                    cout << "\033[0m Insert an option: ";
                     while (flag) {
-                        cin >> country;
-                        for (auto airport: database.getAirports()) {
-                            if (airport.getCountry() == country) {
-                                countries.insert(country);
-                                nAirports++;
-                            }
-                        }
-                        if (!countries.empty()) {
-                            flag = false;
-                            for (auto node: database.getFlightsGraph().getNodes()) {
-                                if (database.getAirports().find(node.first)->getCountry() == country) {
-                                    nFlights += node.second.adj.size();
-                                    for(auto edge : node.second.adj){
-                                        airlines.insert(edge.airlineCode);
-                                    }
+                        cin >> option;
+                        string s;
+                        if (option.length() == 1 && isdigit(option[0])) {
+                            switch (option[0]) {
+                                case '1': {
+                                    flag = false;
+
+                                    drawStatistics(database.getFlightsGraph().getNodes().size(), nFlights, database.getAirlines().size(),
+                                                   12);
+                                    cout << "\033[0mEnter anything to go back: ";
+                                    cin >> s;
+                                    break;
                                 }
+                                case '2': {
+                                    flag = false;
+                                    drawTopAirports(topAirportFlights( airlines, countries));
+                                    string s;
+                                    break;
+                                }
+
+                                case '3': {
+                                    flag = false;
+                                    drawTopAirports(topAirportAirlines(airlines, countries));
+                                    string s;
+                                    break;
+                                }
+
+                                default:
+                                    cout << "Insert a valid option: ";
                             }
-                        } else {
-                            cout << "Country not found: ";
                         }
                     }
-                    cout << "Nº DE AEROPORTOS: " << nAirports << endl;
-                    cout << "Nº DE VOOS: " << nFlights << endl;
-                    cout << "Nº DE COMPANHIAS: " << airlines.size() << endl;
-                    cout << "DIAMETRO: " << diameter(database, airlines, countries) << endl;
-
                     break;
-                case '3':
+                }
+                case '2': {
                     c = false;
-                    string airline;
-                    while (flag){
-                        cin >> airline;
-                        for(auto node : database.getFlightsGraph().getNodes()){
-                            bool hasAirline = false;
-                            for(auto edge : node.second.adj){
-                                if(edge.airlineCode == airline){
-                                    airlines.insert(airline);
-                                    hasAirline = true;
-                                    nFlights++;
-                                }
-                            }
-                            if(hasAirline){
-                                countries.insert(database.getAirports().find(node.first)->getCountry());
-                                nAirports++;
-                            }
-                        }
-                        if(!airlines.empty()){
-                            flag = false;
-                        } else{
-                            cout << "Airline not found: ";
+                    cout << "\033[32mIntroduce the country: ";
+                    cin >> country;
+                    for (auto airport: database.getAirports()) {
+                        if (airport.getCountry() == country) {
+                            countries.insert(country);
+                            nAirports++;
                         }
                     }
+                    if (!countries.empty()) {
+                        for (auto node: database.getFlightsGraph().getNodes()) {
+                            if (database.getAirports().find(node.first)->getCountry() == country) {
+                                nFlights += node.second.adj.size();
+                                for (auto edge: node.second.adj) {
+                                    airlines.insert(edge.airlineCode);
+                                }
+                            }
+                        }
+                        statsMenu.draw();
+                        bool flag = true;
+                        cout << "\033[0m Insert an option: ";
+                        while (flag) {
+                            cin >> option;
+                            if (option.length() == 1 && isdigit(option[0])) {
+                                switch (option[0]) {
+                                    case '1':
+                                        flag = false;
+                                        drawStatistics(nAirports, nFlights, airlines.size(), diameter(airlines, countries));
+                                        cout << "\033[32mEnter anything to go back: ";
+                                        cin >> country;
 
-                    cout << "Nº DE AEROPORTOS: " << nAirports << endl;
-                    cout << "Nº DE VOOS: " << nFlights << endl;
-                    cout << "DIAMETRO: " << diameter(database, airlines, countries) << endl;
+                                        break;
+
+                                    case '2':
+                                        flag = false;
+                                        drawTopAirports(topAirportFlights(airlines, countries));
+                                        cout << "\033[32mEnter anything to go back: ";
+                                        cin >> country;
+                                        break;
+
+                                    case '3':
+                                        flag = false;
+                                        drawTopAirports(topAirportAirlines(airlines, countries));
+                                        cout << "\033[32mEnter anything to go back: ";
+                                        cin >> country;
+                                        break;
+
+                                    default:
+                                        cout << "Insert a valid option: ";
+                                }
+                            }
+                        }
+
+                    } else {
+                        cout << "\033[31m"
+                             << "Country not found!"
+                             << "\033[0m" << endl;
+                        cout << "\033[32mEnter anything to go back: ";
+                        cin >> country;
+                    }
                     break;
+                }
+                case '3': {
+                    string airline;
+                    c = false;
+                    cout << "\033[32mIntroduce the airline code: ";
+                    cin >> airline;
+                    for (auto node: database.getFlightsGraph().getNodes()) {
+                        bool hasAirline = false;
+                        for (auto edge: node.second.adj) {
+                            if (edge.airlineCode == airline) {
+                                airlines.insert(airline);
+                                hasAirline = true;
+                                nFlights++;
+                            }
+                        }
+                        if (hasAirline) {
+                            countries.insert(database.getAirports().find(node.first)->getCountry());
+                            nAirports++;
+                        }
+                    }
+                    if (!airlines.empty()) {
+                        statsMenu.draw();
+                        bool flag = true;
+                        cout << "\033[0m Insert an option: ";
+                        while (flag) {
+                            cin >> option;
+                            if (option.length() == 1 && isdigit(option[0])) {
+                                switch (option[0]) {
+                                    case '1':
+                                        flag = false;
+                                        drawStatistics(nAirports, nFlights, airlines.size(), diameter(airlines, countries));
+                                        cout << "\033[32mEnter anything to go back: ";
+                                        cin >> airline;
+                                        break;
+
+                                    case '2':
+                                        flag = false;
+                                        drawTopAirports(topAirportFlights(airlines, countries));
+                                        cout << "\033[32mEnter anything to go back: ";
+                                        cin >> airline;
+                                        break;
+
+                                    case '3':
+                                        flag = false;
+                                        drawTopAirports(topAirportAirlines(airlines, countries));
+                                        cout << "\033[32mEnter anything to go back: ";
+                                        cin >> airline;
+                                        break;
+
+                                    default:
+                                        cout << "Insert a valid option: ";
+                                }
+                            }
+                        }
+                    } else {
+                        cout << "\033[31m"
+                             << "Airline not found!"
+                             << "\033[0m" << endl;
+                        cout << "\033[32mEnter anything to go back: ";
+                        cin >> airline;
+                    }
+                }
+                case '4':
+                    c = false;
+                    break;
+                default:
+                    cout << "\033[31m"
+                         << "Airline not found!"
+                         << "\033[0m" << endl;
             }
         }
     }
 }
-
-

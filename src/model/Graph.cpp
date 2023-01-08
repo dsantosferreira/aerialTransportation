@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "../Database.h"
 #include <iostream>
 #include <set>
 
@@ -21,6 +22,59 @@ Graph::Graph(int num, airportHTable airports, bool dir) : n(num), hasDir(dir) {
 
 unordered_map<string, Graph::Node> Graph::getNodes() const {
     return this->nodes;
+}
+
+vector<Airport> Graph::artPoints(const airportHTable &airports, const unordered_set<string> &airlines) {
+    vector<Airport> articulationPoints;
+    stack<string> beingVisited;
+    int order;
+
+    for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
+        itr->second.num = 0;
+        itr->second.low = 0;
+        itr->second.inStack = false;
+    }
+
+    for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
+        order = 1;
+        if (nodes[itr->first].num == 0) {
+            artPointsDfs(itr->first, order, beingVisited, airports, airlines, articulationPoints);
+        }
+    }
+
+    return articulationPoints;
+}
+
+void Graph::artPointsDfs(string origin, int &idx, stack<string> &beingVisited, const airportHTable &airports, const unordered_set<string> &airlines, vector<Airport> &artPoints) {
+    bool isArtPoint = false;
+    int children = 0;
+    beingVisited.push(origin);
+    nodes[origin].num = nodes[origin].low = idx++;
+    nodes[origin].inStack = true;
+
+    for (Edge e: nodes[origin].adj) {
+        if (airlines.find(e.airlineCode) != airlines.end()) {
+            string neighbour = e.destCode;
+
+            if (nodes[neighbour].num == 0) {
+                children++;
+                artPointsDfs(neighbour, idx, beingVisited, airports, airlines, artPoints);
+                nodes[origin].low = min(nodes[neighbour].low, nodes[origin].low);
+                if (nodes[neighbour].low >= nodes[origin].num) {
+                    isArtPoint = true;
+                }
+            }
+            else if (nodes[neighbour].inStack) {
+                nodes[origin].low = min(nodes[origin].low, nodes[neighbour].num);
+            }
+        }
+    }
+
+    nodes[origin].inStack = false;
+    beingVisited.pop();
+
+    if ((isArtPoint && !beingVisited.empty()) || (beingVisited.empty() && children > 1))
+        artPoints.push_back(*airports.find(Airport(origin, "", "", "", 0, 0)));
 }
 
 vector<list<pair<string, string>>> Graph::minFlightsBFS(string origin, unordered_set<string> destinations, unordered_set<string> airlines) {
@@ -118,7 +172,7 @@ set<string> Graph::reachedAirportsBFS( int maxFlights, string original)  {
 }
 
 int Graph::bfs(string origin,const unordered_set<string>& airlines,const unordered_set<string>& countries,const airportHTable& airports) {
-    for(auto itr = nodes.begin(); itr != nodes.end(); itr++){
+    for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
         itr->second.distance = 0;
         itr->second.visited = false;
     }
@@ -127,19 +181,30 @@ int Graph::bfs(string origin,const unordered_set<string>& airlines,const unorder
     q.push(origin);
     nodes[origin].distance = 0;
     nodes[origin].visited = true;
-    while (!q.empty()){
+    while (!q.empty()) {
         string curr = q.front();
         q.pop();
-        for(auto e : nodes[curr].adj){
+        for (auto e: nodes[curr].adj) {
             string neighbour = e.destCode;
 
-            if( !nodes[neighbour].visited and airlines.find(e.airlineCode) != airlines.end() and countries.find(airports.find(e.destCode)->getCountry()) != countries.end()) {
+            if (!nodes[neighbour].visited and airlines.find(e.airlineCode) != airlines.end() and
+                countries.find(airports.find(e.destCode)->getCountry()) != countries.end()) {
                 nodes[neighbour].distance = nodes[curr].distance + 1;
-                if(nodes[neighbour].distance > result) result = nodes[neighbour].distance;
+                if (nodes[neighbour].distance > result) result = nodes[neighbour].distance;
                 q.push(neighbour);
                 nodes[neighbour].visited = true;
             }
         }
     }
     return result;
+}
+
+vector<Graph::Edge> Graph::getEdges(string node) {
+    vector<Graph::Edge> airports;
+
+    for(auto e: nodes[node].adj){
+        airports.push_back(e);
+    }
+    return airports;
+
 }

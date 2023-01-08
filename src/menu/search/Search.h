@@ -10,12 +10,13 @@ typedef vector<list<pair<string, string>>> trips;
 
 class Search : public MenuItem{
 private:
-    vector<string> readMenuButtons();
-    void drawMenu(vector<string> buttons);
-    unordered_set<string> chooseAirports();
+    pair<unordered_set<string>, bool> chooseAirports();
     unordered_set<string> chooseAirlines();
     trips getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines);
-    void printMinimalFlights(trips minimalflights);
+    void printMinimalFlights(trips minimalFlights);
+    void draw(int page, list<pair<string, string>> minimalTrip, int nPages) const;
+    void paginationController(trips minimalFlights) const;
+
 public:
     Search(int& currMenuPage, Database& database);
     void execute() override;

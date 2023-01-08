@@ -1,28 +1,44 @@
 #include <cmath>
 #include "Coordinate.h"
-
+/**
+ * @brief Default Constructor of Coordinate
+ */
 Coordinate::Coordinate()
 {
     this->latitude = 0;
     this->longitude = 0;
 }
-
+/**
+ * Constructor of Coordinate
+ * @param latitude
+ * @param longitude
+ */
 Coordinate::Coordinate(float latitude, float longitude)
 {
     this->latitude = latitude;
     this->longitude = longitude;
 }
-
+/**
+ *
+ * @return longitude
+ */
 float Coordinate::getLongitude() const
 {
     return longitude;
 }
-
+/**
+ * @return latitude
+ */
 float Coordinate::getLatitude() const
 {
     return latitude;
 }
-
+/**
+ * @brief Calculates the distance between two coordinates
+ * @param coordinate2
+ * @return the distance between the two coordinates
+ * complexity O(1)
+ */
 float Coordinate::distance(Coordinate coordinate2) const
 {
     float distLongitude = (this->longitude - coordinate2.getLongitude()) * M_PI / 180.0;
