@@ -13,12 +13,8 @@ int diameter(Database& database, unordered_set<string> airlines, unordered_set<s
     Graph flights = database.getFlightsGraph();
     for(auto airport : airports){
         string airportCode = airport.getCode();
-        flights.bfs(airportCode, airlines, countries, airports);
-        for(auto node : flights.getNodes()){
-            if(node.second.distance > max){
-                max = node.second.distance;
-            }
-        }
+        int diameter = flights.bfs(airportCode, airlines, countries, airports);
+        if(diameter > max) max = diameter;
     }
     return max;
 }
@@ -135,7 +131,6 @@ void Statistics::execute() {
     while (c) {
         cin >> option;
         if (option.length() == 1 && isdigit(option[0])) {
-            int nAirlines = 0;
             int nAirports = 0;
             int nFlights = 0;
             bool flag = true;
@@ -169,8 +164,11 @@ void Statistics::execute() {
                         if (!countries.empty()) {
                             flag = false;
                             for (auto node: database.getFlightsGraph().getNodes()) {
-                                if (database.getAirports().find(node.first) != database.getAirports().end() and database.getAirports().find(node.first)->getCountry() == country) {
+                                if (database.getAirports().find(node.first)->getCountry() == country) {
                                     nFlights += node.second.adj.size();
+                                    for(auto edge : node.second.adj){
+                                        airlines.insert(edge.airlineCode);
+                                    }
                                 }
                             }
                         } else {
@@ -179,7 +177,7 @@ void Statistics::execute() {
                     }
                     cout << "Nº DE AEROPORTOS: " << nAirports << endl;
                     cout << "Nº DE VOOS: " << nFlights << endl;
-                    cout << "Nº DE COMPANHIAS: " << nAirlines << endl;
+                    cout << "Nº DE COMPANHIAS: " << airlines.size() << endl;
                     cout << "DIAMETRO: " << diameter(database, airlines, countries) << endl;
 
                     break;
@@ -194,9 +192,13 @@ void Statistics::execute() {
                                 if(edge.airlineCode == airline){
                                     airlines.insert(airline);
                                     hasAirline = true;
+                                    nFlights++;
                                 }
                             }
-                            if(hasAirline) nAirports++;
+                            if(hasAirline){
+                                countries.insert(database.getAirports().find(node.first)->getCountry());
+                                nAirports++;
+                            }
                         }
                         if(!airlines.empty()){
                             flag = false;
