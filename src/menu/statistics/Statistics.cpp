@@ -36,10 +36,13 @@ void drawStatistics(int nAirports, int nFlights, int nAirlines, int diameter ){
     cout << "|\033[40m------------------------------------------------------------------------------\033[0m|" << endl;
     cout << "|\033[40m Airports     | Flights      | Airlines     | Diameter     |                  \033[0m|" << endl;
     cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
-    cout << "|\033[47m " << nAirports << space(13-to_string(nAirports).length())<<"| "<< nFlights << space(13-to_string(nFlights).length()) <<"| "<< nAirlines << space(13-to_string(nAirlines).length()) <<"| "<< diameter <<space(13-to_string(diameter).length()) <<"|                  \033[0m|" << endl;
+    cout << "|\033[100m " << nAirports << space(13-to_string(nAirports).length())<<"| "<< nFlights << space(13-to_string(nFlights).length()) <<"| "<< nAirlines << space(13-to_string(nAirlines).length()) <<"| "<< diameter <<space(13-to_string(diameter).length()) <<"|                  \033[0m|" << endl;
     cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
     cout << "|\033[40m                                                                              \033[0m|" << endl;
     cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+    string  a;
+    cout<<"\033[32mEnter anything to go back: ";
+    cin >>a;
 }
 
 void drawTopAirports(vector<Airport> airports){
@@ -66,6 +69,9 @@ void drawTopAirports(vector<Airport> airports){
     cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
     cout << "|\033[40m                                                                              \033[0m|" << endl;
     cout << "|\033[40m______________________________________________________________________________\033[0m|" << endl;
+    string  a;
+    cout<<"\033[32mEnter anything to go back: ";
+    cin >>a;
 }
 
 vector<Airport> Statistics::topAirportFlights(unordered_set<string> airlines, unordered_set<string> countries){
@@ -134,7 +140,7 @@ void Statistics::execute() {
     unordered_set<string> airlines;
     unordered_set<string> countries;
     vector<Airport> airports;
-    cout << "Insert an option: ";
+    cout << "\033[32mInsert an option: ";
     while (c) {
         cin >> option;
         if (option.length() == 1 && isdigit(option[0])) {
@@ -144,18 +150,15 @@ void Statistics::execute() {
             switch (option[0]) {
                 case '1': {
                     c = false;
+                    for(Airline airline: database->getAirlines()) airlines.insert(airline.getCode());
                     for (auto node: database->getFlightsGraph().getNodes()) {
-                        for (auto e: node.second.adj) {
-                            airlines.insert(e.airlineCode);
-                        }
                         nFlights += node.second.adj.size();
                         auto a = database->getAirports().find(node.first);
                         countries.insert(a->getCountry());
                     }
-
                     statsMenu.draw();
                     bool flag = true;
-                    cout << "\033[0m Insert an option: ";
+                    cout << "\033[32m Insert an option: ";
                     while (flag) {
                         cin >> option;
                         string s;
@@ -163,12 +166,12 @@ void Statistics::execute() {
                             switch (option[0]) {
                                 case '1': {
                                     flag = false;
-
                                     drawStatistics(database->getFlightsGraph().getNodes().size(), nFlights,
                                                    database->getAirlines().size(),
                                                    12);
-                                    cout << "\033[0mEnter anything to go back: ";
+                                    cout << "\033[32mEnter anything to go back: ";
                                     cin >> s;
+                                    cout<<"\033[0m";
                                     break;
                                 }
                                 case '2': {
@@ -186,7 +189,7 @@ void Statistics::execute() {
                                 }
 
                                 default:
-                                    cout << "Insert a valid option: ";
+                                    cout << "\033[31mInsert a valid option: \033[32m";
                             }
                         }
                     }
@@ -213,7 +216,7 @@ void Statistics::execute() {
                         }
                         statsMenu.draw();
                         bool flag = true;
-                        cout << "\033[0m Insert an option: ";
+                        cout << "\033[32m Insert an option: ";
                         while (flag) {
                             cin >> option;
                             if (option.length() == 1 && isdigit(option[0])) {
@@ -242,7 +245,7 @@ void Statistics::execute() {
                                         break;
 
                                     default:
-                                        cout << "Insert a valid option: ";
+                                        cout << "\033[31mInsert a valid option: \033[32m";
                                 }
                             }
                         }
@@ -278,7 +281,7 @@ void Statistics::execute() {
                         if (!airlines.empty()) {
                             statsMenu.draw();
                             bool flag = true;
-                            cout << "\033[0m Insert an option: ";
+                            cout << "\033[32m Insert an option: ";
                             while (flag) {
                                 cin >> option;
                                 if (option.length() == 1 && isdigit(option[0])) {
@@ -306,7 +309,7 @@ void Statistics::execute() {
                                             break;
 
                                         default:
-                                            cout << "Insert a valid option: ";
+                                            cout << "\033[31mInsert a valid option:\033[32m ";
                                     }
                                 }
                             }

@@ -188,8 +188,9 @@ pair<unordered_set<string>, bool> Search::chooseAirports() {
         }
         if(c) cout << "\033[32mChoose a valid option: ";
     }
-    return input;
     cout<<"\033[0m";
+    return input;
+
 }
 
 unordered_set<string> Search::chooseAirlines() {
