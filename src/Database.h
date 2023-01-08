@@ -25,6 +25,9 @@ private:
     /** @var Graph where the nodes represent all the airports and the edges represent all the available flights*/
     Graph flights;
 
+    /** @var Graph where the nodes represent all the airports and the edges represent airports that are connected with flights*/
+    Graph undirectedFlights;
+
 public:
     Database();
     airportHTable getAirports() const;
@@ -35,6 +38,7 @@ public:
     void readAirports();
     void readAirlines();
     void createFlightsGraph();
+    Graph getUndirectedFlightsGraph() const;
 };
 
 #endif

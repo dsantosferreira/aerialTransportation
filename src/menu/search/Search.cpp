@@ -1,8 +1,18 @@
 #include "Search.h"
 #include "../Menu.h"
 
+/**
+ * @brief Constructor of DirectFlights a class that extends MenuItem
+ * @param currMenuPage
+ * @param database
+ */
 Search::Search(int &currMenuPage, Database &database) : MenuItem(currMenuPage, database) {}
 
+/**
+ * @brief Tries to read a float value from user's input
+ * @param option
+ * @return true if input provided wasn't in the right format, false otherwise
+ */
 bool getFloat(float &option) {
     cin >> option;
     if (cin.fail()) {
@@ -164,9 +174,9 @@ bool orderTrips(const trip &t1, const trip &t2) {
  * @see Search::chooseAirports()
  * @see Search::chooseAirlines()
  * @see Search::(selectMaximumAirlines()
- * @see Search::getMinimalFlights(unordered_set<string> originAirports, unordered_set<string> destAirports, unordered_set<string> airlines, const int maxFlights)
  * @see Search::paginationController(trips minimalFlights) const;
  * @see orderTrips(const trip &t1, const trip &t2)
+ * @see Graph::minFlightsBFS(unordered_set<string> origin, unordered_set<string> destinations, unordered_set<string> airlines, const int maxAirlines)
  */
 void Search::execute() {
     pair<unordered_set<string>, bool> originAirports, destAirports;
@@ -284,6 +294,13 @@ int Search::selectMaximumAirlines() {
     return maxAirlines;
 }
 
+/**
+ * Controls the pagination of the drawn table. It allows the user to quit the menu, or jump to the next, previous or any other page directly.
+ * @brief Controls the pagination of the drawn table.
+ * @see Search::draw(int page, trip minimalTrip, int nPages) const
+ * @param minimalFlights vector of minimal trips
+ * Complexity: O(1)
+ */
 void Search::paginationController(trips minimalFlights) const {
     int page = 0;
     while (page >= 0 and page < minimalFlights.size())
@@ -346,6 +363,14 @@ void Search::paginationController(trips minimalFlights) const {
     }
 }
 
+/**
+ * Draws a table that displays the minimal flights. It makes use of a system of pagination that displays one trip per page
+ * @brief Draws a table that displays the minimal flights from X origin airports to Y destination airports
+ * @param page number of the drawn page
+ * @param minimalTrip trip to print
+ * @param nPages number of total pages
+ * Complexity: O(1)
+ */
 void Search::draw(int page, trip minimalTrip, int nPages) const {
     int idx = 0;
     system("clear");

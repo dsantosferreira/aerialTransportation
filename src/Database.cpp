@@ -57,11 +57,13 @@ void Database::readAirlines()
 
 /**
  * @brief Reads the flights from a file and stores its data on a graph
+ * @see Graph::addEdge(string src, string dest, string airline, float weight = 0)
  * complexity O(N) being N the number of flights on the file
  */
 void Database::createFlightsGraph()
 {
     flights = Graph(airports.size(), airports, true);
+    undirectedFlights = Graph(airports.size(), airports, false);
 
     ifstream in("../files/flights.csv");
     string source, target, airline, aLine;
@@ -74,7 +76,8 @@ void Database::createFlightsGraph()
         getline(inn, airline, ',');
         Coordinate c1 = airports.find(Airport(source, "", "", "", 0, 0))->getCoordinate();
         Coordinate c2 = airports.find(Airport(target, "", "", "", 0, 0))->getCoordinate();
-        flights.addEdge(source, target, airline, airports, c1.distance(c2));
+        flights.addEdge(source, target, airline, c1.distance(c2));
+        undirectedFlights.addEdge(source, target, airline, c1.distance(c2));
     }
 }
 
@@ -84,6 +87,10 @@ void Database::createFlightsGraph()
 Graph Database::getFlightsGraph() const
 {
     return flights;
+}
+
+Graph Database::getUndirectedFlightsGraph() const {
+    return undirectedFlights;
 }
 
 /**

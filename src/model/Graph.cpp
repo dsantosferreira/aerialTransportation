@@ -1,27 +1,51 @@
 #include "Graph.h"
 #include "../Database.h"
 
+/**
+ * Graph default constructor
+ */
 Graph::Graph() {}
 
-Graph::Graph(int num, bool dir) : n(num), hasDir(dir) {
-}
-
-void Graph::addEdge(string src, string dest, string airline, airportHTable &airports, float weight) {
+/**
+ * @brief Builds an edge on the graph
+ * @param src origin airport
+ * @param dest destination airport
+ * @param airline airlines used on the flight
+ * @param weight distance travelled by the flight
+ */
+void Graph::addEdge(string src, string dest, string airline, float weight) {
     if (nodes.find(src) == nodes.end() || nodes.find(dest) == nodes.end()) return;
     nodes[src].adj.push_back({dest, weight, airline});
     if (!hasDir) nodes[dest].adj.push_back({src, weight, airline});
 }
 
+/**
+ * Graph constructor (it only builds the nodes)
+ * @param num number of nodes on the graph
+ * @param airports hash table of airports
+ * @param dir whether the graph is directed or not
+ */
 Graph::Graph(int num, airportHTable airports, bool dir) : n(num), hasDir(dir) {
     for (Airport airport: airports) {
         nodes.insert({airport.getCode(), Node()});
     }
 }
 
+/**
+ * @return nodes of the graph
+ */
 unordered_map<string, Graph::Node> Graph::getNodes() const {
     return this->nodes;
 }
 
+/**
+ * @brief Runs the articulation points dfs and returns all the articulation points
+ * @param airports hash table of airports
+ * @param airlines has table of airlines
+ * @see Graph::artPointsDfs(string origin, int &idx, stack<string> &beingVisited, const airportHTable &airports, const unordered_set<string> &airlines, vector<Airport> &artPoints)
+ * @return vector of all the articulation points
+ * Complexity: O(V + E) being V the number of vertices of the graph and E the number of edges of the graph
+ */
 vector<Airport> Graph::artPoints(const airportHTable &airports, const unordered_set<string> &airlines) {
     vector<Airport> articulationPoints;
     stack<string> beingVisited;
@@ -43,6 +67,18 @@ vector<Airport> Graph::artPoints(const airportHTable &airports, const unordered_
     return articulationPoints;
 }
 
+/**
+ * Functions that calculates of the articulation points of the graph.
+ * We considered as articulation points the nodes that, when removed from the graph, increase the amount of weakly connected components of the graph, since we ran the algorithm with an undirected graph
+ * @brief Depth-First Search to find all the articulation points of the graph
+ * @param origin origin airport
+ * @param idx order on which the currently visited node is being visited
+ * @param beingVisited stack of nodes that are still being visited
+ * @param airports hash table of airports
+ * @param airlines hash table of airlines
+ * @param artPoints vector of articulation points
+ * Complexity: O(V + E) being V the number of vertices of the graph and E the number of edges of the graph
+ */
 void Graph::artPointsDfs(string origin, int &idx, stack<string> &beingVisited, const airportHTable &airports, const unordered_set<string> &airlines, vector<Airport> &artPoints) {
     bool isArtPoint = false;
     int children = 0;
@@ -75,6 +111,16 @@ void Graph::artPointsDfs(string origin, int &idx, stack<string> &beingVisited, c
         artPoints.push_back(*airports.find(Airport(origin, "", "", "", 0, 0)));
 }
 
+/**
+ * @brief Breadth-First Search to find all the minimal trips from airports from origin to airports from destinations
+ * @param origins airports where the trips can start
+ * @param destinations airports where the trips can end
+ * @param airlines airlines that are permitted
+ * @param maxAirlines maximum of different airlines permitted
+ * @see Graph::findPaths(trips &allPaths, string currAirportCode, trip aPath, const int maxAirlines, unordered_set<string> usedAirlines)
+ * @return vector of all the minimal trips
+ * Complexity: O(V + E + O(findPaths)) being V the number of vertices of the graph and E the number of edges of the graph
+ */
 trips Graph::minFlightsBFS(unordered_set<string> origins, unordered_set<string> destinations, unordered_set<string> airlines, const int maxAirlines) {
     // Reset all nodes
     for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
@@ -129,6 +175,17 @@ trips Graph::minFlightsBFS(unordered_set<string> origins, unordered_set<string> 
     return allPaths;
 }
 
+/**
+ * Recursively finds all the paths from a destination airport to all the origin airports that have minimal paths to it.
+ * The paths are found with the information of the parents of each node until an origin airport is reached (an airport that has no parents)
+ * @brief Finds all minimal paths between a destination airport and the origin airports
+ * @param allPaths vector that stores all the paths
+ * @param currAirportCode airport we are currently in
+ * @param aPath storage of a path
+ * @param maxAirlines maximum number of different airlines used permitted
+ * @param usedAirlines airlines used in aPath
+ * Complexity O(N) being N the summation of the number of parents of each node
+ */
 void Graph::findPaths(trips &allPaths, string currAirportCode, trip aPath, const int maxAirlines, unordered_set<string> usedAirlines) {
     if (nodes[currAirportCode].parents.empty()) {
         Node a = nodes[currAirportCode];
@@ -153,6 +210,13 @@ void Graph::findPaths(trips &allPaths, string currAirportCode, trip aPath, const
     }
 }
 
+/**
+ * @brief Breadth-First Search to find all the airports reachable from a specific airport with 'maxFlights' flights
+ * @param maxFlights maximum number of flights permitted
+ * @param original starting point (a specific airport code)
+ * @return set with all the airports codes reached
+ * Complexity: O(V + E*log(Vc)) being V the number of vertices in the graph, E de number of edges and Vc the number of currently visited airports
+ */
 set<string> Graph::reachedAirportsBFS( int maxFlights, string original)  {
     for (auto itr = nodes.begin(); itr != nodes.end(); itr++) {
         itr->second.distance = INT32_MAX;
@@ -179,6 +243,13 @@ set<string> Graph::reachedAirportsBFS( int maxFlights, string original)  {
     }
     return visited;
 }
+
+/**
+ * @brief returns all the airports adjacent to the airport provided as input
+ * @param node node we want to get the edges of
+ * @return vector with the edges of the graph
+ * Complexity: O(N) being N the size of the adj list
+ */
 vector<Graph::Edge> Graph::getEdges(string node) {
     vector<Graph::Edge> airports;
 

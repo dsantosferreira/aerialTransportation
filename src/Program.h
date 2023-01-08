@@ -18,18 +18,23 @@ using namespace std;
 class Program
 {
 private:
+    /** @var menu page we are currently in */
     int currMenuPage;
+
+    /** @var vector of all the program's menus */
     vector<Menu> menus;
+
+    /** @var program's database where airports, airlines and the flights graph are stored*/
     Database database;
 
     void createMainMenu();
     void createMenu1();
-    void createMenu2();
+    void createShowMenu();
 
 public:
     Program();
     void run();
-    int getMenuOption(int &option, int nButtons);
+    bool getMenuOption(int &option, int nButtons);
     void cleanMenus();
 };
 

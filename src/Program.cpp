@@ -4,15 +4,22 @@
 #include "menu/show/ShowAirport.h"
 #include "menu/show/ShowAirline.h"
 
+/**
+ * Program's constructor responsible for initializing the database and the menus
+ * @brief Program's constructor
+ */
 Program::Program()
 {
     currMenuPage = 0;
     database = Database();
     createMainMenu();
     createMenu1();
-    createMenu2();
+    createShowMenu();
 }
 
+/**
+ * @brief Keeps the program running while the user doesn't leave the main menu. Makes the mnu perform the action according to the user's inserted option
+ */
 void Program::run()
 {
     int option;
@@ -32,7 +39,13 @@ void Program::run()
     cleanMenus();
 }
 
-int Program::getMenuOption(int &option, int nButtons)
+/**
+ * @brief Tries to read the user's input for the menu option
+ * @param option variable that will store the option
+ * @param nButtons number of buttons on the current menu
+ * @return true if the input provided wasn't in the right format, false otherwise
+ */
+bool Program::getMenuOption(int &option, int nButtons)
 {
     cin >> option;
     if (cin.fail())
@@ -48,6 +61,9 @@ int Program::getMenuOption(int &option, int nButtons)
     return false;
 }
 
+/**
+ * @brief Creates the main menu
+ */
 void Program::createMainMenu()
 {
     menus.push_back(Menu("../files/mainMenu"));
@@ -57,6 +73,9 @@ void Program::createMainMenu()
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, -1));
 }
 
+/**
+ * @brief Creates menu for the direct flights and reachable destinations
+ */
 void Program::createMenu1()
 {
     menus.push_back(Menu("../files/menu1"));
@@ -65,7 +84,10 @@ void Program::createMenu1()
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 0));
 }
 
-void Program::createMenu2()
+/**
+ * @brief Creates the show menu
+ */
+void Program::createShowMenu()
 {
     menus.push_back(Menu("../files/menu2"));
     menus[menus.size() - 1].addMenuItem(new ShowAirports(currMenuPage, database));
@@ -76,6 +98,10 @@ void Program::createMenu2()
     menus[menus.size() - 1].addMenuItem(new ChangeMenu(currMenuPage, database, 0));
 }
 
+/**
+ * @brief deallocates memory that was allocated for each menuItem in each menu
+ * Complexity: O(N*M) being N the number of menus and M the number of menuItems in each menu
+ */
 void Program::cleanMenus()
 {
     for (Menu menu : menus)
