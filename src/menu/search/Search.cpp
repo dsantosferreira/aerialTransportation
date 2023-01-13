@@ -279,7 +279,7 @@ unordered_set<string> Search::chooseAirlines() {
         }
 
         else
-            cout <<"\033[31m"<< input << " isn't a valid airline. Please insert a valid airline:\033[31m ";
+            cout <<"\033[31m"<< input << " isn't a valid airline. Please insert a valid airline:\033[32m ";
     }
 }
 
@@ -291,6 +291,7 @@ int Search::selectMaximumAirlines() {
     int maxAirlines;
 
     system("clear");
+    cout<<"\033[32m";
     cout << "Choose the maximum number of airlines you want to travel with. Write 'q' if you don't want an upper bound of airlines you travel with: ";
     while (getMaximumAirlines(maxAirlines));
     return maxAirlines;
